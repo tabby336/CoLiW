@@ -1,0 +1,11 @@
+{
+	"name": "cakephp/cakephp",
+	"description": "The CakePHP framework",
+	
+    "minimum-stability": "dev",
+	"require": {
+		"oauth-io/oauth": "0.3.2",
+		"facebook/php-sdk-v4": "^5.2"
+	}
+	
+}
