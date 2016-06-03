@@ -1,0 +1,34 @@
+{
+  "tags": {
+    "allowUnknownTags": true
+  },
+  "source": {
+    "include": ["README.md", "bookshelf.js", "src"],
+    "includePattern": ".+\\.js(doc)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": [
+    "node_modules/jsdoc/plugins/markdown"
+  ],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true,
+      "showInheritedFrom": false
+    }
+  },
+  "opts": {
+    "tutorials": "./tutorials",
+    "destination": "./docs/html",
+    "template": "./node_modules/minami",
+    "recurse": true,
+    "private": false,
+    "encoding": "utf-8",
+    "whitelist": [
+      "Bookshelf",
+      "Model",
+      "Collection"
+    ]
+  }
+}

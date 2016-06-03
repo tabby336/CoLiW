@@ -1,0 +1,21 @@
+BODY
+{
+    background-color:black;
+
+}
+div{
+    color:white;
+    font-family:monospace;
+}
+input{
+    background-color:black;
+    color:white;
+    border-width:0px;
+	border:none;
+}
+form{
+    color: white;
+}
+#output {
+	color: green;
+}

@@ -1,0 +1,10 @@
+{% extends '../layouts/default.html' %}
+
+{% block content %}
+{% if isAuthenticated %}
+	<p> Gg, already logged in!!</p>
+{%else %}
+	<p> Not logged in :( </p>
+{% endif %}
+
+{% endblock %}

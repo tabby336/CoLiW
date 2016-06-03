@@ -1,0 +1,10 @@
+{% extends '../layouts/default.html' %}
+
+{% block content %}
+   <form action="/register" method="post">
+  email: <input type="text" name="un"><br>
+  password: <input id="password" type="password" name="pw" ><br>
+  vefiry password: <input id="validate_password" type="password" name="vpw" > <br>
+  <button type="submit" style="visibility: hidden;">Register CoLiW</button><br>
+</form>
+{% endblock %}

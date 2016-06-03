@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>tw</title>
+  <script src="oauth.js"></script>
+</head>
+<body>
+<!--
+REQUEST JS
+-->
+<script> 
+	function includeJs(jsFilePath) {
+    var js = document.createElement("script");
+
+    js.type = "text/javascript";
+    js.src = jsFilePath;
+
+    document.body.appendChild(js);
+}
+</script>
+
+<!-- 
+ALREDY LOGGED IN TRACKER 
+ca sa nu mai facem spam de requesturi
+-->
+<script>
+	loggedInOn = [];
+	function ifLoggedIn(provider_name) {
+		if(loggedInOn.indexOf(provider_name) === -1)
+			return false;
+		return true;
+	}
+	function addToLoggedInOn(provider_name) {
+		if( ifLoggedIn(provider_name) === false) {
+			console.log('Am here logged in on.')
+			loggedInOn.push(provider_name);
+		}	
+	}
+
+	function httpGet(theUrl){
+    	var xhr = new XMLHttpRequest();
+		xhr.open("GET", theUrl, true);
+		xhr.send(null);
+	}
+</script>
+
+<!-- 
+LOGIN
+-->
+<script>
+  function login(provider_name) {
+    //if(ifLoggedIn(provider_name) == false) {
+    	//OAuth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM');
+    	//OAuth.popup(provider_name, function(error, success){
+    	//	console.log(success.oauth_token);
+    	//	console.log(success.oauth_token_secret);
+    	//});
+    	// get the script with functions
+    	script_name = provider_name + ".js";
+    	//includeJs(script_name);
+    	console.log(script_name);
+    	httpGet("/" + script_name);
+    	// mark as already logged in with this provider so we won't spam si requests
+    	//addToLoggedInOn(provider_name);
+    //} else {
+    //	console.log("Already logged in.")
+    //}
+
+  }
+</script>
+<div id="status"></div>
+<button onclick="login('twitter')">Login Twitter</button>
+<button onclick="login('facebook')">Login Facebook</button>
+<button onclick="login('flickr')">Login Flickr</button>
+
+<br><br><br><br><br><br>
+<form action="/login" method="post">
+  email: <input type="text" name="un"><br>
+  password: <input type="password" name="pw"><br>
+  <button type="submit">Login CoLiW</button><br>
+</form>
+<br><br><br><br><br><br>
+
+<form action="/register" method="post">
+  email: <input type="text" name="un"><br>
+  password: <input id="password" type="password" name="pw" ><br>
+  vefiry password: <input id="validate_password" type="password" name="vpw" > <br>
+  <button type="submit">Register CoLiW</button><br>
+</form>
+<br><br><br><br><br><br>
+
+<form action="/logout" method="get">
+	<button type="submit">Logout</button>
+</form>
+
+
+<div id="error"> <p> caca </p></div>
+
+
+
+<!--
+<br><br><br><br><br><br><br><br>
+<div id="status"></div>
+<button onclick="getInfo()">Get Info</button>
+<button onclick="login()">Login</button>
+ <form>
+  To be posted: <br>
+  <input type="text" id="my_post"><br>
+  URL: <br>
+  <input type="text" id="my_url"><br>
+</form> 
+<button onclick="post()">Post</button>
+<form>
+  Photo link: <br>
+  <input type="text" id="my_photo"><br>
+</form> 
+<button onclick="uploadPhoto()">uploadPhoto</button>
+-->
+</body>
+</html>
