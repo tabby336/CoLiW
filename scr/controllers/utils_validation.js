@@ -5,6 +5,11 @@ exports.validateMessageOnlyHints = function(commandObj) {
   return false;
 }
 
+exports.validateMaybeMessage = function(commandObj) {
+  return (commandObj.m != undefined && Object.keys(commandObj).length == 3) || 
+          Object.keys(commandObj).length == 2;
+}
+
 exports.validaterIdOnlyHints = function(commandObj) {
   if (commandObj.i != undefined && Object.keys(commandObj).length - 2 == 1) {
     return true;
@@ -20,6 +25,17 @@ exports.validateIdOrNameHints = function(commandObj) {
     return true;
   }
   return false;
+}
+
+exports.validateMessageAndPositionHints = function(commandObj) {
+  if (commandObj.m != undefined && commandObj.p !=undefined && Object.keys(commandObj).length == 4) {
+    return true;
+  }
+  return false;
+}
+
+exports.validateNoHints = function(commandObj) {
+  return Object.keys(commandObj).length == 2;
 }
 
 function cutQuote(text) {
