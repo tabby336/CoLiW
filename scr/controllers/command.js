@@ -1,7 +1,7 @@
 
 var loginController = require('./login');
 var commandValidator = require('./validator');
-var detectProviders = require('./detect_providers');
+var authentication_handler = require('./detect_providers');
 var facebookCommandHandlers = require('../models/facebook_command_handlers');
 var twitterCommandHandlers = require('../models/twitter_command_handlers');
 var dropboxCommandHandlers = require('../models/dropbox_command_handlers');
@@ -36,7 +36,7 @@ exports.redirect = function(result, req,res) {
         });
     };
 
-function x(req, res, cmd) {
+/*function x(req, res, cmd) {
   var providersNeeded = detectProviders.getInvalidProvider(cmd);
 
     console.log(providersNeeded[0]);
@@ -68,7 +68,7 @@ function x(req, res, cmd) {
     if(redir == false) {
       res.redirect('/command?cmd=' + cmd);
     }
-}
+}*/
 
 exports.authProviders = function(req, res) {
   var redir = false;
@@ -77,22 +77,26 @@ exports.authProviders = function(req, res) {
   if (req.session.cmd === undefined || req.session.cmd === '!!!!?!!!!') {
     req.session.cmd = cmd;
   }
+  //req.session.cmd = '!!!!?!!!!';
+  console.log('noua comanda este :' + req.session.cmd);
 
-  console.log('noua comanda este :' + cmd);
-
-
-  if(req.session.passport.user === undefined) {
-    req.session.command_output = 'Must be logged in first! :D';
-    return res.render('login/index');
-  }
-
+  console.log('Inainte de switch ' + cmd);
   switch(cmd.replace(/[ ]/g, '')) {
     case "\"" : console.log("Suunt prea tare!!!"); return; break;
-    case "register": res.render('login/register'); return; break;
-    case "login": res.render('login/index'); return; break;
-    case "logout": loginController.logout(req, res); return; break;
+    case "register": res.render('login/register'); req.session.cmd = '!!!!?!!!!'; return; break;
+    case "login": res.render('login/index'); req.session.cmd = '!!!!?!!!!'; return; break;
+    case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     default: 
+      if(req.session.passport.user === undefined) {
+        req.session.command_output = 'Must be logged in first! :D';
+        return res.render('login/index');
+      }
       var splitedCommand = commandValidator.isValid(cmd); 
+      if (splitedCommand) {
+       // console.log("111111       RES este *********** ");
+        //console.log(res.route);
+        authentication_handler.authenticate(req, res);
+      }
       console.log('splitedCommand: ' + splitedCommand);
     break;
   }

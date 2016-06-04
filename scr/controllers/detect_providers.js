@@ -1,14 +1,31 @@
+var utils = require('./utils_validation');
 
-exports.getInvalidProvider = function (cmd) {
-  var providers = ["twitter", "facebook", "google_mail", "flickr", "dropbox"];
-  var providersRequired = [];
+exports.authenticate = function(req, res) {
+  var cmd = req.session.cmd;
+  var splitedCommand = cmd.split('|');
 
-  newCmd = ('|' + cmd).replace();
+  console.log("Comanda mea este: " + cmd);
+  //console.log("RES este *********** ");
+  console.log(req.session.oauth);
 
-  for (i = 0; i < providers.length; i++) {
-    if (cmd.indexOf(providers[i]) > -1) {
-      providersRequired.push(providers[i]);
-    }
+  var obj1 = utils.getCommadObject(splitedCommand[0]);
+  var obj2 = undefined;
+  if (splitedCommand.length == 2) {
+  	obj2 = utils.getCommadObject(splitedCommand[1]);
   }
-  return providersRequired;
+//  console.log('provider: ' + obj1.provider);
+  //console.log('test2: ' + req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()));
+  if (obj1 != undefined && (req.session.oauth === undefined || 
+  							!req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
+  	res.redirect('/' + obj1.provider);
+  } 
+
+  if (obj2 != undefined && (req.session.oauth === undefined || 
+  							!req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
+  	res.redirect('/' + obj2.provider);
+  } 
+
+  req.session.cmd === '!!!!?!!!!'
+
+  console.log('GATAAAAAA!!!' + JSON.stringify(req.session.oauth));
 };
