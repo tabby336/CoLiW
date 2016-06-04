@@ -38,6 +38,12 @@ exports.validateNoHints = function(commandObj) {
   return Object.keys(commandObj).length == 2;
 }
 
+exports.validateMessageAndMaybePositionHints = function(commandObj) {
+  return commandObj.m != undefined &&
+         ((commandObj.p != undefined && Object.keys(commandObj).length == 4) ||
+          (commandObj.p == undefined && Object.keys(commandObj).length == 3) );
+}
+
 function cutQuote(text) {
   return text.replace(/["]/g, ' ').trim().toString();
 }
