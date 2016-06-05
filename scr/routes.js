@@ -6,6 +6,7 @@ var rendering = require('./util/rendering'),
     oauthController = require('./controllers/oauth'),
     oauth = require('oauthio'),
     data = require('./models/auth')();
+var validationHandler = require('./controllers/detect_providers');
 
     oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
 
@@ -32,29 +33,6 @@ module.exports = function (app, passport) {
     app.get('/dropbox', oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
     app.get('/youtube', oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
 
-    app.get('/signin', function(req, res) {
-        console.log("Am in /signin endpoint");
-
-        self.provider = req.query.provider;
-        self.cmd = req.query.cmd;
-        console.log(self.cmd);
-        console.log(self.provider);
-
-        if(!req.session.hasOwnProperty('oauth')) {
-            console.log("no auth session");
-            res.redirect('/' + self.provider);
-            console.log("lalalalal");
-        } else {
-            if(!req.session.oauth.hasOwnProperty(req.query.provider)) {
-                console.log("Not logged in with " + req.query.provider);
-                res.redirect('/' + self.provider);
-            } else {
-                console.log("Already logged in with " + req.query.provider);
-                res.redirect("/command?cmd=" + req.session.cmd);
-            }
-        }
-    });
-
     app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
         console.log("Req: "  + req.session.cmd);
         var command = req.session.cmd;
@@ -69,10 +47,12 @@ module.exports = function (app, passport) {
             new data.ApiOauth({oauth_session: ses}).where('id', user_id)
             .save(null, {method: 'update'})
             .then(function(model) {
-                res.redirect("/authProviders?cmd=" + command);  
+              //  res.redirect("/authProviders?cmd=" + command);  
+              console.log("Tot e bine m-am autentificat " + JSON.stringify(req.session.oauth));
+              validationHandler.authenticate(req.session.cmd);
             }, function(err) {
-                console.log("caca " + err);
-                res.redirect("/authProviders?cmd=" + command);  
+                console.log("Eroare la redirect " + err);
+                //res.redirect("/authProviders?cmd=" + command);  
             });
             //res.redirect("/authProviders?cmd=" + command);
         });

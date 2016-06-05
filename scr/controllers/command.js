@@ -36,53 +36,23 @@ exports.redirect = function(result, req,res) {
         });
     };
 
-/*function x(req, res, cmd) {
-  var providersNeeded = detectProviders.getInvalidProvider(cmd);
-
-    console.log(providersNeeded[0]);
-    for(count = 0; count < providersNeeded.length; ++count) {
-      console.log(providersNeeded[count]);
-
-      if(!req.session.hasOwnProperty('oauth')) {
-        redir = true;
-        console.log("Caca no auth session.");
-        //nu exista in sesiune oauth => nu e logat
-        res.redirect('/signin?cmd=' + cmd + '&&provider=' + providersNeeded[count]);
-      } else {
-        // exista sesiune de oauth dar nu e logat
-        if(!req.session.oauth.hasOwnProperty(providersNeeded[count])) {
-          redir = true;
-          console.log("Not loginged in with" + providersNeeded[count]);
-          
-          // la linia asta zice ca can not set headers
-          res.redirect('/signin?cmd=' + cmd + '&&provider=' + providersNeeded[count]);
-        } else {
-          redir = false;
-          // este sesiune + e logat
-          console.log("Already logged in with " + providersNeeded[count]);  
-        }
-      }
-    }
-
-    console.log("inainte de redirect");
-    if(redir == false) {
-      res.redirect('/command?cmd=' + cmd);
-    }
-}*/
-
 exports.authProviders = function(req, res) {
   var redir = false;
   var cmd = req.body.cmd;
 
-  if (req.session.cmd === undefined || req.session.cmd === '!!!!?!!!!') {
-    req.session.cmd = cmd;
-  }
-  //req.session.cmd = '!!!!?!!!!';
+  req.session.cmd = cmd;
+
   console.log('noua comanda este :' + req.session.cmd);
 
-  console.log('Inainte de switch ' + cmd);
+  if (req.session.oauth!=undefined) {
+    console.log('sesiune oauth este twitter' + req.session.oauth.twitter);
+    console.log('sesiune oauth este facebook' + req.session.oauth.facebook);
+    console.log('sesiune oauth este youtube' + req.session.oauth.youtube);
+  }
+  else {
+    console.log('req.session.oauth == undefined');
+  }
   switch(cmd.replace(/[ ]/g, '')) {
-    case "\"" : console.log("Suunt prea tare!!!"); return; break;
     case "register": res.render('login/register'); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": res.render('login/index'); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
@@ -96,6 +66,7 @@ exports.authProviders = function(req, res) {
        // console.log("111111       RES este *********** ");
         //console.log(res.route);
         authentication_handler.authenticate(req, res);
+        res.redirect('/command');
       }
       console.log('splitedCommand: ' + splitedCommand);
     break;
@@ -104,16 +75,16 @@ exports.authProviders = function(req, res) {
 
 exports.commandInterpret = function(req, res) {
   console.log("Am in commandInterpret" + "\n");
-  //console.log(req.session);
+  console.log(req.session.oauth);
+
   var cmd = req.session.cmd;
   console.log(req.session.cmd);
-  req.session.cmd = "!!!!?!!!!";
   
   new data.ApiHistory({id: req.session.passport.user, command: cmd})
   .save(null, {method: 'insert'})
   .then(function(model) {
     //res.send(cmd);
-    commandSplit.parse(req, res, cmd);
+   // commandSplit.parse(req, res, cmd);
   },function(err) {
     console.log(err);
   });
