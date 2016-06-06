@@ -1,4 +1,4 @@
-
+/* git test */
 var rendering = require('./util/rendering'),
     indexController = require('./controllers/index'),
     loginController = require('./controllers/login'),
