@@ -4,21 +4,18 @@ exports.authenticate = function(req, res) {
   var cmd = req.session.cmd;
   var splitedCommand = cmd.split('|');
 
-  console.log("Comanda mea este: " + cmd);
-  //console.log("RES este *********** ");
-  console.log(req.session.oauth);
+  //console.log("Comanda mea este: " + cmd);
+  //console.log(req.session.oauth);
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
-//  console.log('provider: ' + obj1.provider);
-  //console.log('test2: ' + req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()));
   if (obj1 != undefined && (req.session.oauth === undefined || 
   							!req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
   	res.redirect('/' + obj1.provider);
     return;
   } 
 
+  var obj2 = undefined;
   if (splitedCommand.length == 2) {
-    // console.log('\n\n\nComanda inlantuita\n\n\n');
     obj2 = utils.getCommadObject(splitedCommand[1]);
     if (obj2 != undefined && (req.session.oauth === undefined || 
                 !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
@@ -28,7 +25,6 @@ exports.authenticate = function(req, res) {
   }
 
   res.redirect('/command');
-
   return;
 };
 
@@ -43,6 +39,5 @@ exports.afterAnAuthentication = function(req, res) {
       return;
     } 
   }
-
   res.redirect('/command');
 }

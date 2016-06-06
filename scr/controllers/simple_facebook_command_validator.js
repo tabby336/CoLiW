@@ -23,7 +23,7 @@ function validateFacebookPostHints(commandObj) {
 }
 
 function validateFacebookUploadHints(commandObj) {
-  if (commandObj.u != undefined) {
+  if (commandObj.u != undefined ^ commandObj.p !=undefined) {
     if (commandObj.m != undefined && Object.keys(commandObj).length - 2 == 2) {
       return true;
     }

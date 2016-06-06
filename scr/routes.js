@@ -1,4 +1,3 @@
-
 var rendering = require('./util/rendering'),
     indexController = require('./controllers/index'),
     loginController = require('./controllers/login'),
@@ -48,7 +47,8 @@ module.exports = function (app, passport) {
             .save(null, {method: 'update'})
             .then(function(model) {
               //  res.redirect("/authProviders?cmd=" + command);  
-              console.log("Tot e bine m-am autentificat " + JSON.stringify(req.session.oauth));
+              //console.log("Tot e bine m-am autentificat " + JSON.stringify(req.session.oauth));
+              console.log('Autentificarea a fost facuta');
               //validationHandler.authenticate(req.session.cmd);
               res.redirect('/afterAuthentication');
             }, function(err) {

@@ -1,11 +1,7 @@
-
 var loginController = require('./login');
 var commandValidator = require('./validator');
 var authentication_handler = require('./detect_providers');
-var facebookCommandHandlers = require('../models/facebook_command_handlers');
-var twitterCommandHandlers = require('../models/twitter_command_handlers');
-var dropboxCommandHandlers = require('../models/dropbox_command_handlers');
-var commandSplit = require('../models/command_parse/command_split');
+var commandExecute = require('../models/command_executer/command_executer_factory');
 var data = require('../models/auth')();
 
 //var oauth = require('./oauth');
@@ -78,17 +74,17 @@ exports.commandInterpret = function(req, res) {
   console.log(req.session.oauth);
 
   var cmd = req.session.cmd;
-  console.log(req.session.cmd);
-  console.log(req.session.oauth);
+  //console.log(req.session.cmd);
+  //console.log('************************************\n\n\n' + JSON.stringify(req.session.oauth));
   
   new data.ApiHistory({id: req.session.passport.user, command: cmd})
   .save(null, {method: 'insert'})
   .then(function(model) {
-    //res.send(cmd);
-   // commandSplit.parse(req, res, cmd);
   },function(err) {
     console.log(err);
   });
+
+  commandExecute.execute(req, res);
 
   req.session.cmd === '!!!!?!!!!'
   return ;
