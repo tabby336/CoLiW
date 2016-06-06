@@ -66,7 +66,7 @@ exports.authProviders = function(req, res) {
        // console.log("111111       RES este *********** ");
         //console.log(res.route);
         authentication_handler.authenticate(req, res);
-        res.redirect('/command');
+       // res.redirect('/command');
       }
       console.log('splitedCommand: ' + splitedCommand);
     break;
@@ -79,6 +79,7 @@ exports.commandInterpret = function(req, res) {
 
   var cmd = req.session.cmd;
   console.log(req.session.cmd);
+  console.log(req.session.oauth);
   
   new data.ApiHistory({id: req.session.passport.user, command: cmd})
   .save(null, {method: 'insert'})
@@ -88,7 +89,8 @@ exports.commandInterpret = function(req, res) {
   },function(err) {
     console.log(err);
   });
-  
+
+  req.session.cmd === '!!!!?!!!!'
   return ;
 }
 

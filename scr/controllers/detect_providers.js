@@ -9,23 +9,40 @@ exports.authenticate = function(req, res) {
   console.log(req.session.oauth);
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
-  var obj2 = undefined;
-  if (splitedCommand.length == 2) {
-  	obj2 = utils.getCommadObject(splitedCommand[1]);
-  }
 //  console.log('provider: ' + obj1.provider);
   //console.log('test2: ' + req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()));
   if (obj1 != undefined && (req.session.oauth === undefined || 
   							!req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
   	res.redirect('/' + obj1.provider);
+    return;
   } 
 
-  if (obj2 != undefined && (req.session.oauth === undefined || 
-  							!req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
-  	res.redirect('/' + obj2.provider);
-  } 
+  if (splitedCommand.length == 2) {
+    // console.log('\n\n\nComanda inlantuita\n\n\n');
+    obj2 = utils.getCommadObject(splitedCommand[1]);
+    if (obj2 != undefined && (req.session.oauth === undefined || 
+                !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
+      res.redirect('/' + obj2.provider);
+      return;
+    } 
+  }
 
-  req.session.cmd === '!!!!?!!!!'
+  res.redirect('/command');
 
-  console.log('GATAAAAAA!!!' + JSON.stringify(req.session.oauth));
+  return;
 };
+
+exports.afterAnAuthentication = function(req, res) {
+  var splitedCommand = req.session.cmd.split('|');
+  var obj2 = undefined;
+  if (splitedCommand.length == 2) {
+    obj2 = utils.getCommadObject(splitedCommand[1]);
+    if (obj2 != undefined && (req.session.oauth === undefined || 
+                !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
+      res.redirect('/' + obj2.provider);
+      return;
+    } 
+  }
+
+  res.redirect('/command');
+}

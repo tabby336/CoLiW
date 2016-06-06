@@ -49,7 +49,8 @@ module.exports = function (app, passport) {
             .then(function(model) {
               //  res.redirect("/authProviders?cmd=" + command);  
               console.log("Tot e bine m-am autentificat " + JSON.stringify(req.session.oauth));
-              validationHandler.authenticate(req.session.cmd);
+              //validationHandler.authenticate(req.session.cmd);
+              res.redirect('/afterAuthentication');
             }, function(err) {
                 console.log("Eroare la redirect " + err);
                 //res.redirect("/authProviders?cmd=" + command);  
@@ -62,6 +63,7 @@ module.exports = function (app, passport) {
     app.post('/authProviders', commandController.authProviders);
     app.get('/authProviders', commandController.authProviders);
     app.get('/command', commandController.commandInterpret);
+    app.get('/afterAuthentication', validationHandler.afterAnAuthentication);
 
     
     // 'rendering' can be used to format api calls (if you have an api)
