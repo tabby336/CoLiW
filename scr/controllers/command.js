@@ -62,7 +62,10 @@ exports.authProviders = function(req, res) {
        // console.log("111111       RES este *********** ");
         //console.log(res.route);
         authentication_handler.authenticate(req, res);
-       // res.redirect('/command');
+      }
+      else {
+        req.session.command_output = 'Command format is not valid!';
+        return res.redirect('/');
       }
       console.log('splitedCommand: ' + splitedCommand);
     break;

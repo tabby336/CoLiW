@@ -65,6 +65,8 @@ exports.getCommadObject = function(cmd) {
   var simpleCommandParts = getSimpleCommandParts(cmd);
   var commandObj = {};
 
+  if (simpleCommandParts.length < 2) return undefined;
+
   commandObj.provider = simpleCommandParts[0].toString().trim();
   commandObj.action = simpleCommandParts[1].toString().trim();
 

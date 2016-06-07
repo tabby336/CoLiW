@@ -23,13 +23,14 @@ exports.facebookFeedPostMessage = function(req, text, url) {
     console.log(obj);
    	FB.setAccessToken(req.session.oauth.facebook.access_token);	
   	FB.api('/me/feed', 'post', obj, function (res) {
+      console.log('\n\n\n\n' + JSON.stringify(res));
     		if(!res || res.error) {
       		console.log(!res ? 'error occurred' : res.error);
-          reject("An error occurred. Please try again.");
+          reject(res);
       		return;
     		}
     		console.log('Post Id: ' + res.id);
-        resolve("Your command was executed");
+        resolve(res);
   	});
   });
 }

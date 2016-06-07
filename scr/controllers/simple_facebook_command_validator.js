@@ -10,7 +10,7 @@ function validateFacebookPostHints(commandObj) {
   console.log(commandObj.m + "***********" + commandObj.u);
   console.log(commandObj.m != undefined);
   console.log(Object.keys(commandObj).length);
-  if ((commandObj.m != undefined || commandObj.u != undefined) && Object.keys(commandObj).length - 2== 2) {
+  if ((commandObj.m != undefined && commandObj.u != undefined) && Object.keys(commandObj).length - 2 == 2) {
     return true;
   }
   if (commandObj.m != undefined && Object.keys(commandObj).length - 2 == 1) {

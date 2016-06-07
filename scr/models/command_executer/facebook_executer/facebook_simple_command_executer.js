@@ -1,12 +1,12 @@
 var facebookCommandHandlers = require('./facebook_command_handlers');
 
 function post(req, res, obj) {
-	facebookCommandHandlers.facebookFeedPostMessage(req, obj.m, obj.u).then(function(){
+	facebookCommandHandlers.facebookFeedPostMessage(req, obj.m, obj.u).then(function(msg){
 		console.log('Minunat, ai postat pe facebook ceva wow!');
 		req.session.command_output = 'Posted on facebook';
 		return res.redirect('/');
-	})
-	.catch(function(){
+	}).catch(function(err){
+		console.log('***a aparut o eroare  ' + req.session.command_output);
 		req.session.command_output = 'Did not post, there has been an error :(';
 		return res.redirect('/');
 	});
@@ -41,9 +41,9 @@ exports.execute = function(req, res, obj) {
 	switch (obj.action) {
 		case "post" : post(req, res, obj); break;
 		case "upload" : upload(req, res, obj); break;
-		default:
+		default: 
+			req.session.command_output = 'The command action is not defined!' 
+			res.redirect('/');
+		break;
 	}
-	
-	req.session.command_output = 'Workeeed!';
-	return res.redirect('/');
 }
