@@ -3,6 +3,7 @@ var commandValidator = require('./validator');
 var authentication_handler = require('./detect_providers');
 var commandExecute = require('../models/command_executer/command_executer_factory');
 var data = require('../models/auth')();
+var toClient = require('./send_to_client');
 
 //var oauth = require('./oauth');
 
@@ -34,7 +35,8 @@ exports.redirect = function(result, req,res) {
 
 exports.authProviders = function(req, res) {
   var redir = false;
-  var cmd = req.body.cmd;
+  var cmd = req.body.command;
+  console.log(req.body.command);
 
   req.session.cmd = cmd;
 
@@ -54,18 +56,14 @@ exports.authProviders = function(req, res) {
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     default: 
       if(req.session.passport.user === undefined) {
-        req.session.command_output = 'Must be logged in first! :D';
-        return res.render('login/index');
+        toClient.send(req, res, 'You must be logged in first');
       }
       var splitedCommand = commandValidator.isValid(cmd); 
       if (splitedCommand) {
-       // console.log("111111       RES este *********** ");
-        //console.log(res.route);
         authentication_handler.authenticate(req, res);
       }
       else {
-        req.session.command_output = 'Command format is not valid!';
-        return res.redirect('/');
+        toClient.send(req, res, '<p>Command format is not valid!</p>')
       }
       console.log('splitedCommand: ' + splitedCommand);
     break;

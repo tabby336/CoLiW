@@ -56,11 +56,11 @@ exports.facebookFeedPostPhoto = function(req, url, text) {
   	FB.api('/me/photos', 'post', { url: url, caption: text }, function (res) {
   		if(!res || res.error) {
       	console.log(!res ? 'error occurred' : res.error);
-      	reject();
+      	reject(res);
     	}
       else {
-        resolve();
-    	 console.log('Post Id: ' + res.post_id);
+        resolve(res);
+  	    console.log('Post Id: ' + res.post_id);
       }
     });
   });
@@ -81,11 +81,11 @@ exports.facebookPostPhotoFromLocal = function (req, message, path) {
         var bodyJSON = JSON.parse(body);
         if(bodyJSON.error) {
             console.log(bodyJSON.error.message);
-            reject();
+            reject(err);
         }
         else {
           console.log("FACEBOOK POST PHOTO");
-          resolve ();
+          resolve(res);
         }
     }
   );
