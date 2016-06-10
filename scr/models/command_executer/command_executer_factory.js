@@ -4,7 +4,7 @@ var utils = require('../../controllers/utils_validation');
 var facebookSimpleCommandExecuter = require('./facebook_executer/facebook_simple_command_executer');
 
 // twitter
-//var twitterSimpleCommandExecuter = require('./twitter_executer/twitter_simple_command');
+var twitterSimpleCommandExecuter = require('./twitter_executer/twitter_simple_command_executer');
 
 // youtube
 //var youtubeSimpleCommandExecuter = require('./youtube_executer/youtube_simple_command');
@@ -15,7 +15,7 @@ function executeSimpleCommand(req, res, splitedCommand) {
 	switch (obj.provider) {
 		case "facebook": facebookSimpleCommandExecuter.execute(req, res, obj);
 			break;
-		case "twitter":
+		case "twitter": twitterSimpleCommandExecuter.execute(req, res, obj);
 			break;
 		case "youtube":
 			break;
@@ -36,7 +36,7 @@ function executeDoubleCommand(req, res, splitedCommand) {
 exports.execute = function(req, res) {
 	var cmd = req.session.cmd;
 	var splitedCommand = cmd.split('|');
-
+	console.log('*** in executer command ***');
 	switch (splitedCommand.length) {
 		case 1: executeSimpleCommand(req, res, splitedCommand);
 			break;

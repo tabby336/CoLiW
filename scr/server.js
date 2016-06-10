@@ -31,7 +31,7 @@ var knex = require('knex')({
     messages = require('./util/messages');
 
 var app = express();
-
+//app.use(cors(corsOptions));
 
 
 Bookshelf.mysqlAuth = Bookshelf(knex);

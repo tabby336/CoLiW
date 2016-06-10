@@ -34,9 +34,12 @@ exports.redirect = function(result, req,res) {
     };
 
 exports.authProviders = function(req, res) {
+  /*res.header('Access-Control-Allow-Credentials: true');
+  res.header("Access-Control-Request-Headers", "x-requested-with");
+  res.header("Access-Control-Allow-Headers", "x-requested-with");*/
   var redir = false;
-  var cmd = req.body.command;
-  console.log(req.body.command);
+  var cmd =  req.body.cmd; //command
+  console.log('*****' + cmd);
 
   req.session.cmd = cmd;
 
@@ -52,14 +55,16 @@ exports.authProviders = function(req, res) {
   }
   switch(cmd.replace(/[ ]/g, '')) {
     case "register": res.render('login/register'); req.session.cmd = '!!!!?!!!!'; return; break;
-    case "login": res.render('login/index'); req.session.cmd = '!!!!?!!!!'; return; break;
+    case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     default: 
       if(req.session.passport.user === undefined) {
         toClient.send(req, res, 'You must be logged in first');
+        return;
       }
       var splitedCommand = commandValidator.isValid(cmd); 
       if (splitedCommand) {
+        console.log('se face autentificarea');
         authentication_handler.authenticate(req, res);
       }
       else {
@@ -75,7 +80,7 @@ exports.commandInterpret = function(req, res) {
   console.log(req.session.oauth);
 
   var cmd = req.session.cmd;
-  //console.log(req.session.cmd);
+  console.log('Sunt in command interpret  ' + req.session.cmd);
   //console.log('************************************\n\n\n' + JSON.stringify(req.session.oauth));
   
   new data.ApiHistory({id: req.session.passport.user, command: cmd})

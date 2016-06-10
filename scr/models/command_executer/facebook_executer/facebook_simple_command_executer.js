@@ -1,5 +1,5 @@
 var facebookCommandHandlers = require('./facebook_command_handlers');
-var toClient = require('../../../controllers/send_to_client')
+var toClient = require('../../../controllers/send_to_client');
 
 function post(req, res, obj) {
 	var text = "default text";

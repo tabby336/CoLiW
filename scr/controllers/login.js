@@ -1,6 +1,7 @@
 var crypto = require('crypto'),
     passport = require('passport'),
     data = require('../models/auth')();
+var toClient = ('./send_to_client');
 
 
 exports.registerPost = function(req, res) {
@@ -42,20 +43,25 @@ exports.registerPost = function(req, res) {
 }
 
 exports.checkLogin = function(req, res, next) {
+    console.log('Username: ' + req.body.un);
+    console.log('Password: ' + req.body.pw);
     passport.authenticate('local', function(err, user, info) {
         if (err || !user) {
             req.flash('username', req.body.un);
             req.flash('error', info.message);
-            req.session.command_output = "Username or password invalid :(";
-            return res.redirect('/');
+            //toClient.send(req, res, '<p>Username or password invalid </p>');
+            res.writeHead(200, {"Content-Type": "text/plain"});      
+            res.end('<p>Username or password invalid </p>');  
+            req.logout();
         }
         req.logIn(user, function(err) {
             if (err) {
-                return res.redirect('/');
+                //return res.redirect('/');
+                res.writeHead(200, {"Content-Type": "text/plain"});      
+                res.end('<p>An error has occurred!</p>');  
             }
             un = req.body.un;
             req.session.username = un.substr(0, un.indexOf('@'));
-            req.flash('success', 'Welcome!');
             delete req.session['oauth'];
             new data.ApiOauth({id: req.session.passport.user})
             .fetch()
@@ -69,8 +75,10 @@ exports.checkLogin = function(req, res, next) {
                         req.session.oauth = JSON.parse(oauth_session);
                     }
                 }
-                req.session.command_output = "Login succesfully!!";
-                return res.redirect('/');
+                console.log('login succesfully');
+                res.writeHead(200, {"Content-Type": "text/plain"});      
+                res.end('<p>Login succesfully!</p>');  
+                req.logout();
             }, function(err) {
                 console.log(err);
             });
@@ -80,10 +88,9 @@ exports.checkLogin = function(req, res, next) {
 
 
 exports.logout = function(req, res) {
-    req.logout();
-    req.flash('info', 'You are now logged out.');
-    req.session.command_output = 'Logged out succesfully! Come back soon!';
     console.log("Logged out!!")
     delete req.session['oauth'];
-    res.redirect('/');
+    res.writeHead(200, {"Content-Type": "text/plain"});      
+    res.end('<p>Logout succesfully!</p>');  
+    req.logout();
 }

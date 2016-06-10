@@ -24,11 +24,11 @@ exports.postTweet = function(req, text) {
     client.post('statuses/update', {status: text}, function(error, tweet, response) {
       if (!error) {
         console.log(tweet);
-        resolve();
+        resolve(response);
       }
       else {
         console.log(error);
-        reject();
+        reject(error);
       }
     });
   });

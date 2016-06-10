@@ -6,6 +6,7 @@ var rendering = require('./util/rendering'),
     oauth = require('oauthio'),
     data = require('./models/auth')();
 var validationHandler = require('./controllers/detect_providers');
+var cors = require('cors');
 
     oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
 
@@ -26,11 +27,20 @@ module.exports = function (app, passport) {
     app.get('/logout', loginController.logout);
 
     //OAuth & friends
-    app.get('/twitter', oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
-    app.get('/facebook', oauth.auth('facebook', "http://localhost:3000/oauth/redirect"));
-    app.get('/google_mail', oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));
-    app.get('/dropbox', oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
-    app.get('/youtube', oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
+
+    var whitelist = ['https://oauth.io', 'https://api.twitter.com'];
+    var corsOptions = {
+      origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+      }
+    };
+    
+    app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
+    app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://localhost:3000/oauth/redirect"));
+    app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));
+    app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
+    app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
 
     app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
         console.log("Req: "  + req.session.cmd);

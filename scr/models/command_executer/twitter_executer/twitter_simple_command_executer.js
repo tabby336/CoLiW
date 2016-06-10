@@ -1,5 +1,5 @@
 var twitterCommandHandlers = require('./twitter_command_handlers');
-var utils = require('./utils.js');
+var toClient = require('../../../controllers/send_to_client');
 
 const twitterFollow = "twitterfollow";
 const twitterTweet = "twittertweet"
@@ -20,30 +20,22 @@ function getUserTweets(req, id) {
 	});
 }
 
-exports.singleCommandExecute = function(req, res, cmd) {
-	console.log(cmd);
-	var splitCmd = cmd.split('&&');
+function tweet(req, res, obj) {
+	twitterCommandHandlers.postTweet(req, obj.m).then(function(response){
+		console.log('Minunat, ai postat pe twitter!');
+		toClient.send(req, res, '<p>You have posted a new tweet!</p>');
+	})
+	.catch(function(error){
+		toClient.send(req, res, '<p>An error has occurred</p>' + '<p>' + error.error.message + '</p>');
+	});
+}
 
-	if (splitCmd[0].replace(/[ ]/g, '') === twitterTweet) {
-		var result = utils.validHints(['m'], splitCmd[1]);
-		if (result instanceof Error) {
-			req.session.command_output = 'Can not post on twitter :(';
-		}
-		else {
-			console.log('result: ' + result);
-			twitterCommandHandlers.postTweet(req, result[0]).then(function(){
-				console.log('Minunat, ai postat pe twitter!');
-				//se transmite un mesaj la client
-				req.session.command_output = 'Posted on twitter!! :D';
-			})
-			.catch(function(){
-				//se transmite mesajj de eroare la client;
-				req.session.command_output = 'Can not post on twitter :(';
-			});
-		}
+exports.singleCommandExecute = function(req, res, obj) {
+	switch (obj.action) {
+		case "tweet": tweet(req, res, obj);
 	}
 
-	if (splitCmd[0].replace(/[ ]/g, '') === twitterFollow) {
+/*	if (splitCmd[0].replace(/[ ]/g, '') === twitterFollow) {
 		var result = utils.validHints(['i', 'n'], splitCmd[1]);
 		if ((result instanceof Error) || (result[0]!=undefined && result[1] != undefined)){
 			//afiseaza eroarea la client
@@ -183,5 +175,5 @@ exports.singleCommandExecute = function(req, res, cmd) {
 		}	
 	}
 
-	return res.redirect('/');
+	return res.redirect('/');*/
 }
