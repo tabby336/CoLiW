@@ -31,3 +31,8 @@ exports.home = function(req, res) {
 exports.userHome = function(req, res) {
     res.render('index/user-home');
 }
+
+
+exports.successAuth = function(req, res) {
+  res.render('index/success');
+}

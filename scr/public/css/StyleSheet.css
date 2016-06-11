@@ -29,6 +29,7 @@ main .line {
 	background: #000;
     border: none;
     color: #FFF;
+    outline: none;
 }
 
 #user {

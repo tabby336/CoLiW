@@ -49,5 +49,6 @@ exports.afterAnAuthentication = function(req, res) {
       return;
     } 
   }
-  res.redirect('/command');
+  res.redirect('/successAuth');
+  //res.redirect('/command');
 }

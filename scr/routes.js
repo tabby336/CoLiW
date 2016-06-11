@@ -8,7 +8,7 @@ var rendering = require('./util/rendering'),
 var validationHandler = require('./controllers/detect_providers');
 var cors = require('cors');
 
-    oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
+oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
 
 module.exports = function (app, passport) {
 
@@ -30,10 +30,10 @@ module.exports = function (app, passport) {
 
     var whitelist = ['https://oauth.io', 'https://api.twitter.com'];
     var corsOptions = {
-      origin: function(origin, callback){
-        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-        callback(null, originIsWhitelisted);
-      }
+      //origin: function(origin, callback){
+      //  var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+      //  callback(null, originIsWhitelisted);
+      //}
     };
     
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
@@ -76,7 +76,8 @@ module.exports = function (app, passport) {
     app.get('/command', commandController.commandInterpret);
     app.get('/afterAuthentication', validationHandler.afterAnAuthentication);
 
-    
+    app.get('/successAuth', indexController.successAuth);
+
     // 'rendering' can be used to format api calls (if you have an api)
     // into either html or json depending on the 'Accept' request header
     app.get('/apitest', function(req, res) {
