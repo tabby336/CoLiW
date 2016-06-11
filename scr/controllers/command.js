@@ -54,7 +54,7 @@ exports.authProviders = function(req, res) {
     console.log('req.session.oauth == undefined');
   }
   switch(cmd.replace(/[ ]/g, '')) {
-    case "register": res.render('login/register'); req.session.cmd = '!!!!?!!!!'; return; break;
+    case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     default: 

@@ -14,6 +14,7 @@ function sendToServer(queryObj) {
 }
 
 $(function(){ // this will be called when the DOM is ready
+    $("#command").focus();
     $('#command').keyup(function(e) {
     console.log('enter');
     if (e.which==13) {
@@ -25,14 +26,15 @@ $(function(){ // this will be called when the DOM is ready
 
         if (status == 'noSpecial' && newCommand.trim().toString() === 'login') {
             status = 'login';
-            console.log('tb sa afisam ceva');
             $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
             $("html, body").animate({ scrollTop: 10000000000 });
             return;
         }
 
-        if (status === undefined && newCommand.split(' ').legth == 1 && newCommand.replace(/[ ]/g, '') === 'register') {
+        if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
             status = 'register';
+            $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
+            $("html, body").animate({ scrollTop: 10000000000 });
             return;
         }
 
@@ -49,6 +51,27 @@ $(function(){ // this will be called when the DOM is ready
                 status = 'noSpecial';
                 reqObj.pw = newCommand; 
                 $("#command").attr('type', 'text'); 
+                sendToServer(reqObj); 
+            break;
+            case 'register':
+                console.log('register!!!');
+                reqObj = {cmd: 'register', un: newCommand};
+                status = 'registerPassword'; 
+                $('#linie_principala').before('<div class="line">'+ 'Please enter your password.' +'</div>');
+                $("html, body").animate({ scrollTop: 10000000000 });
+                $("#command").attr('type', 'password'); 
+            break;
+            case 'registerPassword':
+                reqObj.pw = newCommand;
+                status = 'registerVerifyPassword'; 
+                $('#linie_principala').before('<div class="line">'+ 'Please retype your password.' +'</div>');
+                $("html, body").animate({ scrollTop: 10000000000 });
+                $("#command").attr('type', 'password');
+            break;
+            case 'registerVerifyPassword':
+                reqObj.vpw = newCommand;
+                status = 'noSpecial';
+                $("#command").attr('type', 'text');
                 sendToServer(reqObj); 
             break;
         }

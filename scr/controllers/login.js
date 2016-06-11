@@ -12,8 +12,10 @@ exports.registerPost = function(req, res) {
     req.flash('username', un);
     
     if(vpw !== pwu) {
-        req.flash('error', 'Your passwords did not match.');
-        res.redirect('/');
+        //req.flash('error', 'Your passwords did not match.');
+        //res.redirect('/');
+        res.writeHead(200, {"Content-Type": "text/plain"});      
+        res.end('<p>Your passwords did not match.</p>');       
         return;
     }
 
@@ -21,8 +23,10 @@ exports.registerPost = function(req, res) {
     var errors = req.validationErrors();
     if (errors) {
         var msg = errors[0].msg;
-        req.flash('error', msg);
-        res.redirect('/');
+      //  req.flash('error', msg);
+        //res.redirect('/');
+        res.writeHead(200, {"Content-Type": "text/plain"});      
+        res.end('<p>An error has occurred</p>'); 
         return;
     }
     
@@ -33,12 +37,17 @@ exports.registerPost = function(req, res) {
     //insert database
     new data.ApiUser({email: un, password: pw, salt: new_salt, created: created}).save().then(function(model) {
         passport.authenticate('local')(req, res, function () {
-            res.redirect('/');
+            //res.redirect('/');
+            res.writeHead(200, {"Content-Type": "text/plain"});      
+            res.end('<p>Your account has been created. Please login!</p>'); 
         })
     }, function(err) {
-        req.flash('error', 'Unable to create account.');
         console.log('Unable to create account');
-        res.redirect('/');
+        res.writeHead(200, {"Content-Type": "text/plain"});      
+        res.end('<p>Unable to create account. Most likely the username already exists.</p>'); 
+        
+        //req.flash('error', 'Unable to create account.');
+        //res.redirect('/');
     });
 }
 
@@ -56,9 +65,9 @@ exports.checkLogin = function(req, res, next) {
         }
         req.logIn(user, function(err) {
             if (err) {
-                //return res.redirect('/');
                 res.writeHead(200, {"Content-Type": "text/plain"});      
                 res.end('<p>An error has occurred!</p>');  
+                return;
             }
             un = req.body.un;
             req.session.username = un.substr(0, un.indexOf('@'));
