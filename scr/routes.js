@@ -61,6 +61,7 @@ module.exports = function (app, passport) {
               console.log('Autentificarea a fost facuta');
               //validationHandler.authenticate(req.session.cmd);
               res.redirect('/afterAuthentication');
+             // res.status(412).end('');
             }, function(err) {
                 console.log("Eroare la redirect " + err);
                 //res.redirect("/authProviders?cmd=" + command);  

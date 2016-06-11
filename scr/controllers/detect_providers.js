@@ -20,7 +20,7 @@ exports.authenticate = function(req, res) {
   //res.setHeader();
   //res.setHeader();
   
-  	res.redirect('/' + obj1.provider);
+  	res.status(412).end(obj1.provider);
     return;
   } 
 

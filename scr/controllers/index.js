@@ -22,8 +22,8 @@ exports.home = function(req, res) {
       }
       res.render('index/index2', {username: req.session.username, output: command_output});
     } else {
-      //command_output = req.session.command_output;
-     // res.render('index/index2', {username: 'guest', output: 'Must be logged in to execute commands!!'});
+      command_output = req.session.command_output;
+      res.render('index/index2', {username: 'guest', output: 'Must be logged in to execute commands!!'});
     }
 }
 

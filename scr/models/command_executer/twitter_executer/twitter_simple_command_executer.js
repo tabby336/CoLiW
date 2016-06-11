@@ -30,7 +30,7 @@ function tweet(req, res, obj) {
 	});
 }
 
-exports.singleCommandExecute = function(req, res, obj) {
+exports.execute = function(req, res, obj) {
 	switch (obj.action) {
 		case "tweet": tweet(req, res, obj);
 	}
