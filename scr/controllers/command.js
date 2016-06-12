@@ -5,6 +5,9 @@ var commandExecute = require('../models/command_executer/command_executer_factor
 var data = require('../models/auth')();
 var toClient = require('./send_to_client');
 
+
+var googleCalendarController = require('../models/command_executer/google_executer/google_calendar_handlers.js');
+
 //var oauth = require('./oauth');
 
 var oauth = require('oauthio');
@@ -53,10 +56,16 @@ exports.authProviders = function(req, res) {
   else {
     console.log('req.session.oauth == undefined');
   }
+
   switch(cmd.replace(/[ ]/g, '')) {
     case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
+
+    case "google": googleCalendarController.getGoogleEvents(req, res); return; break;
+
+    
+
     default: 
       if(req.session.passport.user === undefined) {
         toClient.send(req, res, 'You must be logged in first');

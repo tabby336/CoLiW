@@ -30,10 +30,10 @@ module.exports = function (app, passport) {
 
     var whitelist = ['https://oauth.io', 'https://api.twitter.com'];
     var corsOptions = {
-      //origin: function(origin, callback){
-      //  var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-      //  callback(null, originIsWhitelisted);
-      //}
+      origin: function(origin, callback){
+        var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
+        callback(null, originIsWhitelisted);
+      }
     };
     
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
@@ -41,8 +41,10 @@ module.exports = function (app, passport) {
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));
     app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
     app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
+    app.get('/google_calendar', cors(corsOptions), oauth.auth('google_calendar', "http://localhost:3000/oauth/redirect"));
 
     app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
+        console.log("In oauth redirect");
         console.log("Req: "  + req.session.cmd);
         var command = req.session.cmd;
         if (result instanceof Error) {
@@ -75,6 +77,7 @@ module.exports = function (app, passport) {
     app.get('/authProviders', commandController.authProviders);
     app.get('/command', commandController.commandInterpret);
     app.get('/afterAuthentication', validationHandler.afterAnAuthentication);
+
 
     app.get('/successAuth', indexController.successAuth);
 
