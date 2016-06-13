@@ -4,6 +4,7 @@ var newCommand = '';
 var newPopUpWindow;
 
 function sendToServer(queryObj) {
+    console.log("lalala");
     $.ajaxSetup({
         async: false
     });
@@ -12,8 +13,26 @@ function sendToServer(queryObj) {
             $("html, body").animate({ scrollTop: 10000000000 });
         }).fail(function(data) {
             if (data.status === 412) {
+
                 newPopUpWindow = window.open(window.location.href + data.responseText, "DescriptiveWindowName",
     "width=420,height=230,resizable,scrollbars=yes,status=1");
+               /* if (newPopUpWindow.closed) {
+                    console.log('window closed');
+                } else {
+                    console.log('window open');
+                }*/
+
+                var windowInterval = setInterval(checkIfWindowClosed,500);
+
+                function checkIfWindowClosed() {
+                    if(newPopUpWindow.closed) {
+                        console.log('eventually closed');
+                        sendToServer(queryObj);
+                        clearInterval(windowInterval);
+                    } else {
+                        console.log('not closed yet');
+                    }
+                };
             }
         });
 }

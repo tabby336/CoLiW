@@ -62,7 +62,7 @@ exports.authProviders = function(req, res) {
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
 
-    case "google": googleCalendarController.getGoogleEvents(req, res); return; break;
+    case "google": googleCalendarController.getGoogleEvents(req, res); return; break; 
 
     
 
