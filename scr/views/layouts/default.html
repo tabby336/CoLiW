@@ -11,10 +11,20 @@
         <script src="/js/js.js"> </script>
     </head>
     <body>
-    <main>
-        <div id="linie_principala" class="linie">
-            <input id="command" type="text" size="100" autofocus></input> 
+        <input class="out-of-sight" type="text">
+        <div class="container">
+          <div class="row">
+            <div id="terminal">
+              <div id="linie_principala" class="linie">
+                  <p id="line">
+                    <span id="prompt">user:~$</span> 
+                    <span id="input"></span>
+                    <span id="cursor" class=""></span>
+                  </p>
+              </div>
+            </div>
+          </div>
         </div>
-    </main>
     </body>
 </html>
+
