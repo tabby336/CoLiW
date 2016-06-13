@@ -1,37 +1,40 @@
-html , body {
-    padding: 0;
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #000;
-}
 body {
-
-    overflow-y: scroll;
+  font-family: monospace;
+  font-size: 13px;
+  color: #a6e22e;
+  background-color: #272822;
 }
 
-main {
-    width: 100%;
-    float: left;
-    margin: 0;
-    padding: 10px;
+.container {
+  padding: 60px 15px 0;
 }
 
-main .line {
-    width: 100%;
-    float: left;
-    margin: 10px 0 0 0;
-    color: #FFFFFF;
+.out-of-sight {
+  position: absolute;
+  top: -100px;
 }
 
-#command {
-	background: #000;
-    border: none;
-    color: #FFF;
-    outline: none;
+.blink {
+  -webkit-animation: blink 1.5s steps(2, start) infinite;
+  -moz-animation: blink 1.5s steps(2, start) infinite;
+  -o-animation: blink 1.5s steps(2, start) infinite;
+  animation: blink 1.5s steps(2, start) infinite;
+  background-color: #a6e22e;
 }
 
-#user {
-    color:white;
+@-webkit-keyframes blink { to { visibility: hidden; } }
+@-moz-keyframes blink { to { visibility: hidden; } }
+@-o-keyframes blink { to { visibility: hidden; } }
+@keyframes blink { to { visibility: hidden; } }
+
+#terminal p {
+  margin-bottom: 0;
+}
+
+#cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  vertical-align: -0.2em;
+  border: 1px solid #a6e22e;
 }
