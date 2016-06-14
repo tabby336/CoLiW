@@ -14,8 +14,10 @@ function validateSecondCommandForSearch(commandObj) {
 exports.validateTwitterAction = function(commandObj1, commandObj2) {
   switch (commandObj1.action) {
     case "search": 
-    	return util.validateMessageAndPositionHints(commandObj1) && 
+    	return util.validateMessageAndMaybePositionHints(commandObj1) && 
     		   validateSecondCommandForSearch(commandObj2); break;
     default: return false; break;
   }
 }
+
+

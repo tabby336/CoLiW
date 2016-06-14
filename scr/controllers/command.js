@@ -85,7 +85,7 @@ exports.authProviders = function(req, res) {
 
 exports.commandInterpret = function(req, res) {
   console.log("Am in commandInterpret" + "\n");
-  console.log(req.session.oauth);
+  //console.log(req.session.oauth);
 
   var cmd = req.session.cmd;
   console.log('Sunt in command interpret  ' + req.session.cmd);
@@ -98,12 +98,9 @@ exports.commandInterpret = function(req, res) {
     console.log(err);
   });
 
+  console.log('***Voi executa comanda');
   commandExecute.execute(req, res);
 
   req.session.cmd === '!!!!?!!!!'
   return ;
-}
-
-replaceSpace = function(cmd) {
-  return cmd.replace('%20',' ');
 }

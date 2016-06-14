@@ -9,17 +9,11 @@ exports.authenticate = function(req, res) {
   var splitedCommand = cmd.split('|');
 
   //console.log("Comanda mea este: " + cmd);
-  console.log(req.session.oauth);
+ // console.log(req.session.oauth);
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
   if (obj1 != undefined && (req.session.oauth === undefined || 
                 !req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
-  //console.log( + res.headers);
- // res.header('Access-Control-Allow-Origin' , 'https://oauth.io' );
- // next(res); 
-  //res.setHeader();
-  //res.setHeader();
-  
   	res.status(412).end(obj1.provider);
     return;
   } 
@@ -29,11 +23,10 @@ exports.authenticate = function(req, res) {
     obj2 = utils.getCommadObject(splitedCommand[1]);
     if (obj2 != undefined && (req.session.oauth === undefined || 
                 !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
-      res.redirect('/' + obj2.provider);
+      res.status(412).end(obj2.provider);
       return;
     } 
   }
-
   res.redirect('/command');
   return;
 };

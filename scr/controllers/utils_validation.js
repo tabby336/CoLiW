@@ -34,6 +34,11 @@ exports.validateMessageAndPositionHints = function(commandObj) {
   return false;
 }
 
+exports.validateMessageAndMaybePositionHints = function(commandObj) {
+  return (Object.keys(commandObj).length == 3 && commandObj.m != undefined) ||
+         (Object.keys(commandObj).length == 4 && commandObj.m != undefined && commandObj.p != undefined);
+}
+
 exports.validateNoHints = function(commandObj) {
   return Object.keys(commandObj).length == 2;
 }

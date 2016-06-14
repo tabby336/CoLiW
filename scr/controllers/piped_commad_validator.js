@@ -4,6 +4,7 @@ var utils = require('./utils_validation');
 
 exports.validatePipedCommand = function(cmd) {
   var commandParts = cmd.split('|');
+  console.log('***commandParts: ' + commandParts);
   commandObj1 = utils.getCommadObject(commandParts[0]);
   commandObj2 = utils.getCommadObject(commandParts[1]);
 
