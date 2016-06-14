@@ -4,6 +4,7 @@ var authentication_handler = require('./detect_providers');
 var commandExecute = require('../models/command_executer/command_executer_factory');
 var data = require('../models/auth')();
 var toClient = require('./send_to_client');
+var outputFotmat = require('./format_output');
 
 
 var googleCalendarController = require('../models/command_executer/google_executer/google_calendar_handlers.js');
@@ -62,13 +63,11 @@ exports.authProviders = function(req, res) {
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
 
-    case "google": googleCalendarController.getGoogleEvents(req, res); return; break; 
-
-    
+    case "google": googleCalendarController.getGoogleEvents(req, res); return; break;
 
     default: 
       if(req.session.passport.user === undefined) {
-        toClient.send(req, res, 'You must be logged in first');
+        toClient.send(req, res, outputFotmat.errorMessage('You must be logged in first'));
         return;
       }
       var splitedCommand = commandValidator.isValid(cmd); 
@@ -77,7 +76,7 @@ exports.authProviders = function(req, res) {
         authentication_handler.authenticate(req, res);
       }
       else {
-        toClient.send(req, res, '<p>Command format is not valid!</p>')
+        toClient.send(req, res, outputFotmat.errorMessage('Command format is not valid!'));
       }
       console.log('splitedCommand: ' + splitedCommand);
     break;

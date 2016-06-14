@@ -1,7 +1,8 @@
 var crypto = require('crypto'),
     passport = require('passport'),
     data = require('../models/auth')();
-var toClient = ('./send_to_client');
+var toClient = require('./send_to_client');
+var outputFormat = require('./format_output');
 
 
 exports.registerPost = function(req, res) {
@@ -11,11 +12,8 @@ exports.registerPost = function(req, res) {
     
     req.flash('username', un);
     
-    if(vpw !== pwu) {
-        //req.flash('error', 'Your passwords did not match.');
-        //res.redirect('/');
-        res.writeHead(200, {"Content-Type": "text/plain"});      
-        res.end('<p>Your passwords did not match.</p>');       
+    if(vpw !== pwu) {      
+        toClient.send(req, res, outputFormat.errorMessage('Your passwords did not match.'));
         return;
     }
 
@@ -23,10 +21,7 @@ exports.registerPost = function(req, res) {
     var errors = req.validationErrors();
     if (errors) {
         var msg = errors[0].msg;
-      //  req.flash('error', msg);
-        //res.redirect('/');
-        res.writeHead(200, {"Content-Type": "text/plain"});      
-        res.end('<p>An error has occurred</p>'); 
+        toClient.send(req, res, outputFormat.errorMessage('An error has occurred.' + msg));
         return;
     }
     
@@ -37,17 +32,14 @@ exports.registerPost = function(req, res) {
     //insert database
     new data.ApiUser({email: un, password: pw, salt: new_salt, created: created}).save().then(function(model) {
         passport.authenticate('local')(req, res, function () {
-            //res.redirect('/');
-            res.writeHead(200, {"Content-Type": "text/plain"});      
-            res.end('<p>Your account has been created. Please login!</p>'); 
+            toClient.send(req, res, outputFormat.okMessage('Your account has been created. Please login!'));
+            return;
         })
     }, function(err) {
         console.log('Unable to create account');
-        res.writeHead(200, {"Content-Type": "text/plain"});      
-        res.end('<p>Unable to create account. Most likely the username already exists.</p>'); 
-        
-        //req.flash('error', 'Unable to create account.');
-        //res.redirect('/');
+        console.log(err);
+        toClient.send(req, res, outputFormat.errorMessage('Unable to create account. Most likely the username already exists.'));
+        return;
     });
 }
 
@@ -58,16 +50,14 @@ exports.checkLogin = function(req, res, next) {
         if (err || !user) {
             req.flash('username', req.body.un);
             req.flash('error', info.message);
-            //toClient.send(req, res, '<p>Username or password invalid </p>');
-            res.writeHead(200, {"Content-Type": "text/plain"});      
-            res.end('<p>Username or password invalid </p>');  
+            toClient.send(req, res, outputFormat.errorMessage('Username or password invalid.'));
             req.logout();
+            return;
         }
         req.logIn(user, function(err) {
             if (err) {
-                res.writeHead(200, {"Content-Type": "text/plain"});      
-                res.end('<p>An error has occurred!</p>');  
-                return;
+               toClient.send(req, res, outputFormat.errorMessage('An error has occurred.'));
+               return;
             }
             un = req.body.un;
             req.session.username = un.substr(0, un.indexOf('@'));
@@ -85,8 +75,7 @@ exports.checkLogin = function(req, res, next) {
                     }
                 }
                 console.log('login succesfully');
-                res.writeHead(200, {"Content-Type": "text/plain"});      
-                res.end('<p>Login succesfully!</p>');  
+                toClient.send(req, res, outputFormat.okMessage('Login succesfully.'));  
                 req.logout();
             }, function(err) {
                 console.log(err);
@@ -98,8 +87,7 @@ exports.checkLogin = function(req, res, next) {
 
 exports.logout = function(req, res) {
     console.log("Logged out!!")
-    delete req.session['oauth'];
-    res.writeHead(200, {"Content-Type": "text/plain"});      
-    res.end('<p>Logout succesfully!</p>');  
+    delete req.session['oauth'];    
+    toClient.send(req, res, outputFormat.okMessage('Logout succesfully.'));  
     req.logout();
 }

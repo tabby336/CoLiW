@@ -47,3 +47,11 @@ body {
     margin: 0px 0px 0px 0px;
     border: 1px solid #a6e22e; 
 }
+
+.ok {
+  color: white;
+}
+
+.error {
+  color: red;
+}

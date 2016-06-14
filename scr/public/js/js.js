@@ -149,9 +149,23 @@ $(document).on('keypress', function(event) {
                 } break;
         case 8: inputLeft = inputLeft.substring(0, inputLeft.length - 1); break;
         case 13: enterPressed(); break;
-        default: inputLeft = inputLeft + String.fromCharCode(event.which); break;
+        default: 
+            if (!event.ctrlKey) {
+                inputLeft = inputLeft + String.fromCharCode(event.which); 
+            } break;
     }
 
+    printCommand();
+});
+
+document.addEventListener("paste", function (e) {
+    console.log(e.target.id);
+    var pastedText = undefined;
+    if (window.clipboardData && window.clipboardData.getData) { // IE
+        inputLeft = inputLeft + window.clipboardData.getData('Text');
+    } else if (e.clipboardData && e.clipboardData.getData) {
+        inputLeft = inputLeft + e.clipboardData.getData('text/plain');
+    }
     printCommand();
 });
 
@@ -167,5 +181,3 @@ $('input').blur(function() {
 $(document).on('click', function() {
     $('input').focus();
 });
-
-$('#cursor').blink();
