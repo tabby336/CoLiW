@@ -2,9 +2,8 @@ var status = 'noSpecial';
 var reqObj = {};
 var newCommand = '';
 var newPopUpWindow;
-var input = '';
-
-
+var inputLeft = '';
+var inputRigth = '';
 
 function sendToServer(queryObj) {
     console.log("lalala");
@@ -41,8 +40,9 @@ function sendToServer(queryObj) {
 }
 
 function enterPressed() {
-    newCommand = input;
-    input = '';
+    newCommand = inputLeft + inputRigth;
+    inputLeft = '';
+    inputRigth = '';
     console.log(newCommand);
     console.log('Status   ' + status);
     console.log(newCommand.trim().toString() === 'login');
@@ -102,38 +102,57 @@ function enterPressed() {
 }
 var input = '';
 
-function addToHistory(line, htmlMode) {
-    htmlMode = htmlMode || false;
-    if (htmlMode) {
-        $('#history').append($('<p>').html(line));
+function replaceWithStars(input) {
+    var replacedInput = '';
+    for (var i = 0; i < input.length; i++) {
+        replacedInput = replacedInput + '*';
+    }   
+    return replacedInput;
+}
+
+function printCommand() {
+    if (status == 'loginPassword' || status == 'registerPassword' || status == 'registerVerifyPassword') {
+        var replacedInputLeft = replaceWithStars(inputLeft);
+        var replacedInputRigth = replaceWithStars(inputRigth);
+        $('#inputLeft').text(replacedInputLeft);
+        $('#inputRigth').text(replacedInputRigth);
     } else {
-        $('#history').append($('<p>').text(line));
-    }
-    while ($('#history').children().length >= bjs.MAX_HISTORY_LINE_COUNT) {
-        $('#history p').first().remove();
+        $('#inputRigth').text(inputRigth);
+        $('#inputLeft').text(inputLeft);
     }
 }
 
-function renderInput() {
-    if (status == 'loginPassword' || status == 'registerPassword' || status == 'registerVerifyPassword') {
-        var replacedInput = '';
-        for (var i = 0; i < input.length; i++) {
-            replacedInput = replacedInput + '*';
-        }
-        $('#input').text(replacedInput);
-    } else {
-        $('#input').text(input);
+function moveCharacter(fromInput, toInput) {
+    if (toInput == undefined) {toInput = ''};
+    if (fromInput.length > 0) {
+        toInput = fromInput[fromInput.length - 1] + toInput; 
+        fromInput = fromInput.substring(0, fromInput.length - 1);
     }
+    return {'from': fromInput, 'to': toInput};
 }
 
 $(document).on('keypress', function(event) {
+    console.log(event);
     switch (event.which) {
-        case 8: input = input.substring(0, input.length - 1); break;
+        case 0: if (event.key == 'ArrowRight') {
+                    if (inputLeft == undefined) {inputLeft = ''};
+                    if (inputRigth.length > 0) {
+                        inputLeft = inputLeft + inputRigth[0] ; 
+                        inputRigth = inputRigth.substring(1, inputRigth.length);
+                    }
+                } else if (event.key == 'ArrowLeft') { 
+                    if (inputRigth == undefined) {inputRigth = ''};
+                    if (inputLeft.length > 0) {
+                        inputRigth = inputLeft[inputLeft.length - 1] + inputRigth ; 
+                        inputLeft = inputLeft.substring(0, inputLeft.length - 1);
+                    }
+                } break;
+        case 8: inputLeft = inputLeft.substring(0, inputLeft.length - 1); break;
         case 13: enterPressed(); break;
-        default: input = input + String.fromCharCode(event.which); break;
+        default: inputLeft = inputLeft + String.fromCharCode(event.which); break;
     }
 
-    renderInput();
+    printCommand();
 });
 
 $('input').focus(function() {
@@ -148,3 +167,5 @@ $('input').blur(function() {
 $(document).on('click', function() {
     $('input').focus();
 });
+
+$('#cursor').blink();

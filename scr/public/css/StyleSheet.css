@@ -22,19 +22,28 @@ body {
   background-color: #a6e22e;
 }
 
-@-webkit-keyframes blink { to { visibility: hidden; } }
-@-moz-keyframes blink { to { visibility: hidden; } }
-@-o-keyframes blink { to { visibility: hidden; } }
-@keyframes blink { to { visibility: hidden; } }
+#terminal p {
+  margin-bottom: 0;
+}
+
+#inputLeft {
+    margin: 0px 0px 0px 0px;
+}
+
+#inputRigth {
+    margin: 0px 0px 0px 0px;
+}
 
 #terminal p {
   margin-bottom: 0;
 }
 
+
 #cursor {
-  display: inline-block;
-  width: 0.6em;
-  height: 1.2em;
-  vertical-align: -0.2em;
-  border: 1px solid #a6e22e;
+    display: inline-block;
+    width: 0.6em;
+    height: 1.2em;
+    vertical-align: -0.2em;
+    margin: 0px 0px 0px 0px;
+    border: 1px solid #a6e22e; 
 }
