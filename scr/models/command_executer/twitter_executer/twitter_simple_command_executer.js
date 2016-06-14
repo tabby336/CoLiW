@@ -1,5 +1,6 @@
 var twitterCommandHandlers = require('./twitter_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
+var outputFormat = require('../../../controllers/format_output');
 
 const twitterFollow = "twitterfollow";
 const twitterTweet = "twittertweet"
@@ -8,142 +9,79 @@ const twetterRetweet = "twitterretweet";
 const twitterGetTweets = "twittergettweets";
 const twitterGetFriendsTweets = "twittergetfriendstweets";
 
-function getUserTweets(req, id) {
-	return new Promise(function(resolve, reject) {
-		//console.log("Promise");
-		twitterCommandHandlers.getTweets(req, undefined, id, 1).then(function(response){
-		//console.log('get user tweets: ' + response[0].text);
-		var responseForClientFriendTweets = '';
-		//console.log(responseForClientFriendTweets);
-		resolve(response[0].text);
-		});
-	});
-}
-
 function tweet(req, res, obj) {
 	twitterCommandHandlers.postTweet(req, obj.m).then(function(response){
 		console.log('Minunat, ai postat pe twitter!');
-		toClient.send(req, res, '<p>You have posted a new tweet!</p>');
+		toClient.send(req, res, outputFormat.okMessage('You have posted a new tweet!'));
 	})
 	.catch(function(error){
-		toClient.send(req, res, '<p>An error has occurred</p>' + '<p>' + error.error.message + '</p>');
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error[0].message));
+	});
+}
+
+function follow(req, res, obj) {
+	twitterCommandHandlers.follow(req, obj.i, obj.n).then(function(){
+		console.log('Minunat, ai dat follow la un dude!');
+		toClient.send(req, res, outputFormat.okMessage('You just followed someone on twitter!'));
+	})
+	.catch(function(error){
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error[0].message));
+	});
+}
+
+function retweet(req, res, obj) {
+	twitterCommandHandlers.retweet(req, obj.i).then(function(response){
+		console.log('Minunat, ai dat retweet la o mare tampenie!');
+		toClient.send(req, res, outputFormat.okMessage('You have just retweeted a tweet!'));
+	})
+	.catch(function(error){
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error[0].message));
+	});
+}
+
+function formatTwitterTweets(response) {
+	var responseForClient = '';
+	var i = 0;
+	while (response[i] != undefined) {
+		console.log('get responses');
+		responseForClient = responseForClient + outputFormat.tweetsFromSearch(response[i]);
+		++i;
+	}
+	return responseForClient;
+}
+
+function search(req, res, obj) {
+	twitterCommandHandlers.searchTweet(req, obj.m).then(function(response){
+		toClient.send(req, res, formatTwitterTweets(response.statuses));
+	})
+	.catch(function(){
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error[0].message));
+	});
+}
+
+function activity(req, res, obj) {
+	console.log('activity');
+	console.log(obj);
+	twitterCommandHandlers.getTweets(req, obj.n, obj.i).then(function(response){
+		console.log(response[0]);
+		toClient.send(req, res, formatTwitterTweets(response));
+	})
+	.catch(function(error){
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error[0].message));
 	});
 }
 
 exports.execute = function(req, res, obj) {
 	switch (obj.action) {
-		case "tweet": tweet(req, res, obj);
+		case "tweet": tweet(req, res, obj); break;
+		case "follow": follow(req, res, obj); break;
+		case "retweet": retweet(req, res, obj); break;
+		case "search": search(req, res, obj); break;
+		case "activity": activity(req, res, obj); break;
 	}
 
-/*	if (splitCmd[0].replace(/[ ]/g, '') === twitterFollow) {
-		var result = utils.validHints(['i', 'n'], splitCmd[1]);
-		if ((result instanceof Error) || (result[0]!=undefined && result[1] != undefined)){
-			//afiseaza eroarea la client
-			req.session.command_output = 'Can not follow on twitter :(';
-		}
-		else {
-			console.log('result: ' + result);
-			console.log('parameters: ' + result[0] + "  "+ result[1]);
-			twitterCommandHandlers.follow(req, result[0], result[1]).then(function(response){
-				console.log('Minunat, ai dat follow la un dude!');
-				//se transmite un mesaj la client
-				req.session.command_output = 'Followed some dude!! :D';
-			})
-			.catch(function(){
-				//se transmite mesajj de eroare la client;
-				req.session.command_output = 'Can not follow on twitter :(';
-			});
-		}
-	}
-
-	if (splitCmd[0].replace(/[ ]/g, '') === twetterRetweet) {
-		var result = utils.validHints(['i'], splitCmd[1]);
-		if (result instanceof Error){
-			//afiseaza eroarea la client
-			req.session.command_output = 'Can not retweet on twitter :(';
-		}
-		else {
-			twitterCommandHandlers.retweet(req, result[0]).then(function(response){
-				console.log('Minunat, ai dat retweet la o mare tampenie!');
-				//se transmite un mesaj la client
-				req.session.command_output = 'You retweeted something!! :D';
-			})
-			.catch(function(){
-				//se transmite mesajj de eroare la client;
-				req.session.command_output = 'Can not retweet on twitter :(';
-			});
-		}
-	}
-
-	if (splitCmd[0].replace(/[ ]/g, '') === twitterSearch) {
-		var result = utils.validHints(['m', 'p'], splitCmd[1]);
-		if (result instanceof Error){
-			//afiseaza eroarea la client
-			req.session.command_output = 'Can not search on twitter :(';
-		}
-		else {
-			twitterCommandHandlers.searchTweet(req, result[0]).then(function(response){
-				var order = 0;
-				if (result[1] !=undefined) {
-					order = parseInt(result[1]);
-				}
-				console.log(response.statuses[order].text);
-				if (response.statuses[order] != undefined){
-					// se afiseaza la client ceva 
-					req.session.command_output = 'Searched on twitter!! :D';
-				}
-				else {
-					//se afiseaza eroare la client (nu avem la dispoztie atatea tweet-uri)
-					req.session.command_output = 'No tweets :(';
-				}
-			})
-			.catch(function(){
-				//eroare la client
-				req.session.command_output = 'Bad format :(';
-			});
-		}
-	}
-
-	if (splitCmd[0].replace(/[ ]/g, '') === twitterGetTweets) {
-		console.log('*************************twitterGetTweets');
-		var result = utils.validHints(['n', 'i', 'c'], splitCmd[1]);
-		if (result instanceof Error || (result[0] != undefined && result[1]!=undefined) ||
-			(result[0] === undefined && result[1] === undefined)){
-			//afiseaza eroarea la client
-			req.session.command_output = 'Bad format :(';
-		}
-		else {
-			var count = 1;
-			if (result[2] !=undefined) {
-				count = parseInt(result[2]);
-			}
-			twitterCommandHandlers.getTweets(req, result[0], result[1], count).then(function(response){
-				console.log(response[0]);
-				if (result[0] != undefined) {
-					var responseForClient = response[0].user.name + ':';
-					
-					var i = 0;
-					while (i < count && response[i] != undefined){
-						console.log(i);
-						responseForClient = responseForClient + '\n  * ' + response[i].text;
-						++i;
-					}
-					console.log(responseForClient);
-
-					// trimite responseForClient la client
-					req.session.command_output = responseForClient;
-				}
-				else {
-					//eroare la client posibil username gresit 
-					req.session.command_output = 'Twitter error :(';
-				}
-			})
-			.catch(function(){
-				//eroare la client
-				req.session.command_output = 'Bad format :(';
-			});
-		}
-	}	
+	/*
+		
 
 	console.log(splitCmd[0] + "   " + twitterGetFriendsTweets);
 

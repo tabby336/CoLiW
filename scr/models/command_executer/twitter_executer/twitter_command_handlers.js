@@ -50,7 +50,7 @@ exports.searchTweet = function(req, text) {
  			resolve(tweets);
  		 }
      else {
-      reject();
+      reject(error);
      }
 
  	  });
@@ -70,7 +70,7 @@ exports.retweet = function(req, tweetID) {
       resolve(response);
      }
      else {
-      reject();
+      reject(error);
      }
     });
   });
@@ -98,7 +98,7 @@ exports.follow = function(req, user_id, screen_name) {
      }
      else {
       console.log(error);
-      reject();
+      reject(error);
      }
     });
   });
@@ -126,9 +126,9 @@ exports.getFriends = function(req, screen_name, count) {
   });
 }
 
-exports.getTweets = function(req, screen_name, id, count) {
+exports.getTweets = function(req, screen_name, id) {
   return new Promise(function(resolve, reject)  {
-    var obj = {count: count};
+    var obj = {};
     if (screen_name != undefined) {
         obj.screen_name = screen_name;
     }
@@ -143,11 +143,12 @@ exports.getTweets = function(req, screen_name, id, count) {
 
     client.get('statuses/user_timeline', obj, function(error, tweet, response) {
      if (!error) {
+      //console.log(tweet);
       resolve(tweet);
      }
      else {
       console.log(error);
-      reject();
+      reject(error);
      }
     });
   });
