@@ -13,3 +13,10 @@ exports.tweetsFromSearch = function(tweet) {
 	var retweets = 'Number of retweets: ' + tweet.retweet_count + '\n';
 	return '<pre class="ok">' + id + text + user + retweets + '</pre>';
 }
+
+exports.youtubeSearchFormat = function(obj) {
+	var name = 'Title: ' + obj.snippet.title + '\n';
+	var auxiliaryURL = 'https://www.youtube.com/watch?v=' + obj.id.videoId ;
+	var url = 'URL: ' + auxiliaryURL;
+	return '<pre class="ok">' + name + url + '</pre>';
+}

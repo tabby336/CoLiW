@@ -1,42 +1,33 @@
 var youtubeCommandHandlers = require('./youtube_command_handlers');
-var utils = require('./utils.js');
+var toClient = require('../../../controllers/send_to_client');
+var outputFormat = require('../../../controllers/format_output');
 
-
-const youtubeSearch = "youtubesearch";
-
-exports.singleCommandExecute = function(req, res, cmd) {
-	console.log('singleCommandExecute:' + cmd);
-	var splitCmd = cmd.split('&&');
-
-	if (splitCmd[0].replace(/[ ]/g, '') === youtubeSearch) {
-		var result = utils.validHints(['m', 'p'], splitCmd[1]);
-		if (result instanceof Error) {
-			//afiseaza eroarea la client
-			req.session.command_output = 'Youtube command not executed';
-			return res.redirect('/');
+function formatFoundVideos(response) {
+	var responseForClient = '';
+	var i = 0;
+	console.log(response);
+	while (response[i] != undefined) {
+		if (response[i].id.videoId != undefined) {
+			responseForClient = responseForClient + outputFormat.youtubeSearchFormat(response[i]);
 		}
-		else {
-			console.log('result: ' + result);
-			youtubeCommandHandlers.search(req, result[0]).then(function(response){
-				console.log('Minunat, ai gasit o melodie wow!');
-				if (result[1] === undefined) {
-					console.log('https://www.youtube.com/watch?v=' + response.items[0].id.videoId);
-					req.session.command_output = 'https://www.youtube.com/watch?v=' + response.items[0].id.videoId;
-				} else {
-					req.session.command_output = 'https://www.youtube.com/watch?v=' + response.items[parseInt(result[1])].id.videoId;
-					console.log('https://www.youtube.com/watch?v=' + response.items[parseInt(result[1])].id.videoId);	
-				}
-				return res.redirect('/');
-			})
-			.catch(function(){
-				req.session.command_output = 'Youtube command not executed';
-				return res.redirect('/');
-			});
-		}
+		++i;
 	}
-	else {
-		//comanda inexistenta
-		req.session.command_output = 'Bad youtube command format :(';
-		return res.redirect('/');
+	return responseForClient;
+}
+
+function search(req, res, obj) {
+	youtubeCommandHandlers.search(req, obj.m).then(function(response){
+		console.log('Minunat, ai gasit o melodie wow!');
+		toClient.send(req, res, formatFoundVideos(response.items));
+	})
+	.catch(function(error){
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred.'));
+	});
+}
+
+exports.execute = function(req, res, obj) {
+	switch (obj.action) {
+		case "search": search(req, res, obj); break;
 	}
 }
+

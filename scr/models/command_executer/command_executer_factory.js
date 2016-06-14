@@ -7,7 +7,7 @@ var facebookSimpleCommandExecuter = require('./facebook_executer/facebook_simple
 var twitterSimpleCommandExecuter = require('./twitter_executer/twitter_simple_command_executer');
 
 // youtube
-//var youtubeSimpleCommandExecuter = require('./youtube_executer/youtube_simple_command');
+var youtubeSimpleCommandExecuter = require('./youtube_executer/youtube_simple_command_executer');
 
 function executeSimpleCommand(req, res, splitedCommand) {
 	var obj = utils.getCommadObject(splitedCommand[0]);
@@ -17,7 +17,7 @@ function executeSimpleCommand(req, res, splitedCommand) {
 			break;
 		case "twitter": twitterSimpleCommandExecuter.execute(req, res, obj);
 			break;
-		case "youtube":
+		case "youtube": youtubeSimpleCommandExecuter.execute(req, res, obj);
 			break;
 	}
 } 

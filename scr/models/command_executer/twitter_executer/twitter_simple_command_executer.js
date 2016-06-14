@@ -2,13 +2,6 @@ var twitterCommandHandlers = require('./twitter_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
 var outputFormat = require('../../../controllers/format_output');
 
-const twitterFollow = "twitterfollow";
-const twitterTweet = "twittertweet"
-const twitterSearch = "twittersearch";
-const twetterRetweet = "twitterretweet";
-const twitterGetTweets = "twittergettweets";
-const twitterGetFriendsTweets = "twittergetfriendstweets";
-
 function tweet(req, res, obj) {
 	twitterCommandHandlers.postTweet(req, obj.m).then(function(response){
 		console.log('Minunat, ai postat pe twitter!');
@@ -63,7 +56,6 @@ function activity(req, res, obj) {
 	console.log('activity');
 	console.log(obj);
 	twitterCommandHandlers.getTweets(req, obj.n, obj.i).then(function(response){
-		console.log(response[0]);
 		toClient.send(req, res, formatTwitterTweets(response));
 	})
 	.catch(function(error){
@@ -79,39 +71,4 @@ exports.execute = function(req, res, obj) {
 		case "search": search(req, res, obj); break;
 		case "activity": activity(req, res, obj); break;
 	}
-
-	/*
-		
-
-	console.log(splitCmd[0] + "   " + twitterGetFriendsTweets);
-
-	if (splitCmd[0].replace(/[ ]/g, '') === twitterGetFriendsTweets) {
-		console.log('*************************twitterGetFriendsTweets');
-		var result = utils.validHints(['n', 'c'], splitCmd[1]);
-		if (result instanceof Error) {
-			req.session.command_output = 'Twitter error :(';
-			return res.redirect('/');
-		}
-		else {
-			var count = 1;
-			if (result[1] !=undefined) {
-				count = parseInt(result[1]);
-			}
-			twitterCommandHandlers.getFriends(req, undefined, result[0], count).then(function(response) {
-				console.log('callback function: ' + response.ids);
-				var responseForClient = '';
-				var i = 0;
-				while (i < count && response.ids[i] != undefined){
-					console.log(i);	
-					getUserTweets(req, response.ids[i]).then(function(response) {
-						responseForClient = responseForClient + '\n' + response;
-						console.log(response);	
-					});
-					++i;
-				}	
-			});
-		}	
-	}
-
-	return res.redirect('/');*/
 }
