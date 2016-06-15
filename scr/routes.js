@@ -2,7 +2,6 @@ var rendering = require('./util/rendering'),
     indexController = require('./controllers/index'),
     loginController = require('./controllers/login'),
     commandController = require('./controllers/command'),
-    oauthController = require('./controllers/oauth'),
     oauth = require('oauthio'),
     data = require('./models/auth')();
 var validationHandler = require('./controllers/detect_providers');
@@ -63,8 +62,6 @@ module.exports = function (app, passport) {
             new data.ApiOauth({oauth_session: ses}).where('id', user_id)
             .save(null, {method: 'update'})
             .then(function(model) {
-              //  res.redirect("/authProviders?cmd=" + command);  
-              //console.log("Tot e bine m-am autentificat " + JSON.stringify(req.session.oauth));
               console.log('Autentificarea a fost facuta');
               //validationHandler.authenticate(req.session.cmd);
               res.redirect('/afterAuthentication');
@@ -85,23 +82,6 @@ module.exports = function (app, passport) {
 
 
     app.get('/successAuth', indexController.successAuth);
-
-    // 'rendering' can be used to format api calls (if you have an api)
-    // into either html or json depending on the 'Accept' request header
-    app.get('/apitest', function(req, res) {
-        rendering.render(req, res, {
-            'data': {
-                'test': {
-                    'testsub': {
-                        'str': 'testsub hello world'
-                    },
-                    'testsub2': 42
-                },
-                'test2': 'hello world'
-            }
-        });
-    })
-
 
     // Auth Middleware
     function ensureAuthenticated(req, res, next) {

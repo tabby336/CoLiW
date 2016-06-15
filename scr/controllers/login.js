@@ -59,8 +59,6 @@ exports.checkLogin = function(req, res, next) {
                toClient.send(req, res, outputFormat.errorMessage('An error has occurred.'));
                return;
             }
-            un = req.body.un;
-            req.session.username = un.substr(0, un.indexOf('@'));
             delete req.session['oauth'];
             new data.ApiOauth({id: req.session.passport.user})
             .fetch()

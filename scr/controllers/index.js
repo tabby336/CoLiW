@@ -10,21 +10,7 @@ exports.home = function(req, res) {
       return;
     }
 
-    var user_id = req.session.passport.user;
-    if(user_id > 0) {
-      command_output = '';
-      if(typeof req.session.command_output !== undefined) {
-        console.log('have command output');
-        command_output = req.session.command_output;
-        console.log("REQ CMD OUTPUT: " + req.session.command_output);
-        delete req.session['command_output'];
-
-      }
-      res.render('index/index2', {username: req.session.username, output: command_output});
-    } else {
-      command_output = req.session.command_output;
-      res.render('index/index2', {username: 'guest', output: 'Must be logged in to execute commands!!'});
-    }
+    res.render('index/index2');
 }
 
 

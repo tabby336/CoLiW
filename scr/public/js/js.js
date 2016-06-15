@@ -41,12 +41,7 @@ function sendToServer(queryObj) {
 
                 newPopUpWindow = window.open(window.location.href + data.responseText, "DescriptiveWindowName",
     "width=420,height=230,resizable,scrollbars=yes,status=1");
-               /* if (newPopUpWindow.closed) {
-                    console.log('window closed');
-                } else {
-                    console.log('window open');
-                }*/
-
+    
                 var windowInterval = setInterval(checkIfWindowClosed,500);
 
                 function checkIfWindowClosed() {
