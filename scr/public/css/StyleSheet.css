@@ -14,12 +14,18 @@ body {
   top: -100px;
 }
 
-.blink {
-  -webkit-animation: blink 1.5s steps(2, start) infinite;
-  -moz-animation: blink 1.5s steps(2, start) infinite;
-  -o-animation: blink 1.5s steps(2, start) infinite;
-  animation: blink 1.5s steps(2, start) infinite;
+.blinking {
+  -webkit-animation: blink 1.5s steps(1, start) infinite;
+  -moz-animation: blink 1.5s steps(1, start) infinite;
+  -o-animation: blink 1.5s steps(1, start) infinite;
+  animation: blink 1.5s steps(1, start) infinite;
   background-color: #a6e22e;
+}
+
+@keyframes blink {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
 }
 
 #terminal p {
@@ -41,7 +47,7 @@ body {
 
 #cursor {
     display: inline-block;
-    width: 0.6em;
+    width: 0.4em;
     height: 1.2em;
     vertical-align: -0.2em;
     margin: 0px 0px 0px 0px;
