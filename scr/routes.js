@@ -8,6 +8,9 @@ var rendering = require('./util/rendering'),
 var validationHandler = require('./controllers/detect_providers');
 var cors = require('cors');
 
+var history = require('./models/history.js');
+
+
 oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
 
 module.exports = function (app, passport) {
@@ -19,6 +22,8 @@ module.exports = function (app, passport) {
     // Home
     app.get('/', indexController.home);
     app.get('/home', ensureAuthenticated, indexController.userHome);
+
+    app.get('/history', history.getNthCommand)
 
 
     // Auth
