@@ -9,6 +9,7 @@ var twitterDoubleCommandExecuter = require('./twitter_executer/twitter_double_co
 
 // youtube
 var youtubeSimpleCommandExecuter = require('./youtube_executer/youtube_simple_command_executer');
+var youtubeDoubleCommandExecuter = require('./youtube_executer/youtube_double_command_executer');
 
 function executeSimpleCommand(req, res, splitedCommand) {
 	var obj = utils.getCommadObject(splitedCommand[0]);
@@ -29,7 +30,7 @@ function executeDoubleCommand(req, res, splitedCommand) {
 	switch (obj1.provider) {
 		case "twitter": twitterDoubleCommandExecuter.execute(req, res, obj1, obj2);
 			break;
-		case "youtube": 
+		case "youtube": youtubeDoubleCommandExecuter.execute(req, res, obj1, obj2);
 			break;
 	}
 }

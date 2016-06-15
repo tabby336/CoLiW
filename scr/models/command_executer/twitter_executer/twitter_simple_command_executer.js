@@ -64,6 +64,7 @@ function activity(req, res, obj) {
 }
 
 exports.execute = function(req, res, obj) {
+	console.log(JSON.stringify(obj));
 	switch (obj.action) {
 		case "tweet": tweet(req, res, obj); break;
 		case "follow": follow(req, res, obj); break;

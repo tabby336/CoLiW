@@ -1,0 +1,3 @@
+youtube search -m "years and years" | twitter tweet
+youtube search -m "years and years" | facebook post -m "Teste mereu teste #TW"
+youtube search -m "years and years" | facebook post -m 
