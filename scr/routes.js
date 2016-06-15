@@ -23,7 +23,7 @@ module.exports = function (app, passport) {
     app.get('/', indexController.home);
     app.get('/home', ensureAuthenticated, indexController.userHome);
 
-    app.get('/history', history.getNthCommand)
+    app.get('/history', history.getUsername)
 
 
     // Auth

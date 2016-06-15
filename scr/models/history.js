@@ -3,12 +3,11 @@ var data = require('./auth')();
 exports.getNthCommand = function(req, res, n) {
 	var user_id = req.session.passport.user;
 	
-	//n = 500;
+	//n = 5;
 
 	var qb = data.ApiHistory.query();
   	qb
-    .select('*')
-    .from('history')
+    .select('command')
     .where('id', '=', user_id)
     .orderBy('time', 'DESC')
     .limit(n)
@@ -21,4 +20,24 @@ exports.getNthCommand = function(req, res, n) {
         //return ??
         console.log("no command");
     });
+}
+
+exports.getUsername = function(req, res) {
+    var user_id = req.session.passport.user;
+    if(typeof user_id !== undefined ) {
+        var qb = data.ApiUser.query()
+        .select('email')
+        .where('id', '=', user_id)
+        .then(function(result) {
+            var un = result[0]['email'];
+            un = un.substr(0, un.indexOf('@'));
+            console.log(un);
+        })
+        .catch(function(error) {
+            console.log("guest");
+        })
+
+    } else {
+        console.log("guest");
+    }
 }
