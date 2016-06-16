@@ -8,6 +8,7 @@ var outputFotmat = require('./format_output');
 
 
 var googleCalendarController = require('../models/command_executer/google_executer/google_calendar_handlers.js');
+var dropboxController = require('../models/command_executer/dropbox_executer/dropbox_command_handlers');
 
 //var oauth = require('./oauth');
 
@@ -63,7 +64,8 @@ exports.authProviders = function(req, res) {
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
 
-    case "google": googleCalendarController.getGoogleEvents(req, res); return; break;
+    case "google": googleCalendarController.googleCommand(req, res); return; break;
+    case 'dropbox': dropboxController.getFile(req,res); return; break;
 
     default: 
       if(req.session.passport.user === undefined) {

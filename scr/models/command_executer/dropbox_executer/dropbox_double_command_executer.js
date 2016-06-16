@@ -1,10 +1,21 @@
-var simpleCommandExecuter = require('./facebook_simple_command_executer');
+
 var dropboxCommandHandlers = require('./dropbox_command_handlers');
-var utils = require('./utils.js');
+//var utils = require('./utils.js');
+
+var fb = require('../facebook_executer/facebook_command_handlers');
 
 const facebookPostPhoto = "facebookpostphoto";
 const dropboxGet = "dropboxget";
 
+exports.dropboxDownloadFBUpload = function(req, res) {
+	dropboxCommandHandlers.getFile(req, 'caca.jpg').then(function(response) {
+		console.log(response);
+		//path = '/Users/Alfa/CoLiW/CoLiW/scr/' + 'caca.jpg';
+		//fb.facebookPostPhotoFromLocal(req, 'teeest', 'caca.jpg');
+	});
+}
+
+/*
 var appendToSecondCommand = function (secondCommand, hints) {
 	console.log('secondCommand apend fct' + secondCommand + hints);
 	if (secondCommand.indexOf('&&') === -1) {
@@ -51,3 +62,4 @@ exports.doubleCommandExecute = function(req, commad) {
 		// nu se poate procesa o asemenea comanda inlantuita
 	}
 }
+*/

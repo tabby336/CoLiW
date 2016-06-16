@@ -2,15 +2,14 @@ var rendering = require('./util/rendering'),
     indexController = require('./controllers/index'),
     loginController = require('./controllers/login'),
     commandController = require('./controllers/command'),
-    oauth = require('oauthio'),
-    data = require('./models/auth')();
-var validationHandler = require('./controllers/detect_providers');
-var cors = require('cors');
+    data = require('./models/auth')(),
+    validationHandler = require('./controllers/detect_providers'),
+    cors = require('cors');
 
 var history = require('./models/history.js');
 
-
-oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
+var oauthModule = require('./controllers/oauth');
+var oauth = oauthModule.oauth;
 
 module.exports = function (app, passport) {
 
