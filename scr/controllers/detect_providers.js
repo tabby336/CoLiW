@@ -4,6 +4,13 @@ function next(res) {
 console.log("\n*\n" + JSON.stringify(res.headers));
 }
 
+function getProvider(partialName) {
+  switch (partialName) {
+    case 'calendar': return 'google_calendar';
+    default: return partialName;
+  }
+}
+
 exports.authenticate = function(req, res) {
   var cmd = req.session.cmd;
   var splitedCommand = cmd.split('|');
@@ -12,18 +19,20 @@ exports.authenticate = function(req, res) {
  // console.log(req.session.oauth);
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
+  var provider1 = getProvider(obj1.provider);
   if (obj1 != undefined && (req.session.oauth === undefined || 
-                !req.session.oauth.hasOwnProperty(obj1.provider.toString().trim()))) {
-  	res.status(412).end(obj1.provider);
+                !req.session.oauth.hasOwnProperty(provider1.toString().trim()))) {
+  	res.status(412).end(provider1);
     return;
   } 
 
   var obj2 = undefined;
   if (splitedCommand.length == 2) {
     obj2 = utils.getCommadObject(splitedCommand[1]);
+    var provider2 = getProvider(obj2.provider);
     if (obj2 != undefined && (req.session.oauth === undefined || 
-                !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
-      res.status(412).end(obj2.provider);
+                !req.session.oauth.hasOwnProperty(provider2.toString().trim()))) {
+      res.status(412).end(provider2);
       return;
     } 
   }

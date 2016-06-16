@@ -61,6 +61,8 @@ function addToCommandObj(commandObj, hint, hintValue) {
     case "-p": console.log("p"); commandObj.p = cutQuote(hintValue); break;
     case "-n": console.log("n"); commandObj.n = cutQuote(hintValue); break;
     case "-u": console.log("u"); commandObj.u = cutQuote(hintValue); break;
+    case "-c": console.log("c"); commandObj.c = cutQuote(hintValue); break;
+    case "-d": console.log("d"); commandObj.d = cutQuote(hintValue); break;
     default: return undefined;
   }
   return commandObj;

@@ -38,12 +38,10 @@ function sendToServer(queryObj) {
             $("html, body").animate({ scrollTop: 10000000000 });
         }).fail(function(data) {
             if (data.status === 412) {
-
                 newPopUpWindow = window.open(window.location.href + data.responseText, "DescriptiveWindowName",
     "width=420,height=230,resizable,scrollbars=yes,status=1");
-    
-                var windowInterval = setInterval(checkIfWindowClosed,500);
-
+                
+	var windowInterval = setInterval(checkIfWindowClosed,500);
                 function checkIfWindowClosed() {
                     if(newPopUpWindow.closed) {
                         console.log('eventually closed');
@@ -118,6 +116,11 @@ function enterPressed() {
         break;
     }
 }
+
+function linkPressed(cmd) {
+    cmd = cmd.trim();
+}
+
 var input = '';
 
 function replaceWithStars(input) {
@@ -140,14 +143,6 @@ function printCommand() {
     }
 }
 
-function moveCharacter(fromInput, toInput) {
-    if (toInput == undefined) {toInput = ''};
-    if (fromInput.length > 0) {
-        toInput = fromInput[fromInput.length - 1] + toInput; 
-        fromInput = fromInput.substring(0, fromInput.length - 1);
-    }
-    return {'from': fromInput, 'to': toInput};
-}
 
 $(document).on('keypress', function(event) {
     console.log(event);
@@ -185,15 +180,6 @@ document.addEventListener("paste", function (e) {
         inputLeft = inputLeft + e.clipboardData.getData('text/plain');
     }
     printCommand();
-});
-
-$('input').focus(function() {
-    console.log('ceva ceva ceva');
-    $('#cursor').addClass('blink');
-});
-
-$('input').blur(function() {
-    $('#cursor').removeClass('blink');
 });
 
 $(document).on('click', function() {
