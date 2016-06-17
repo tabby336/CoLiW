@@ -29,6 +29,6 @@ exports.calendarEventFormat = function (obj) {
 													  'Start time: ' + obj.start.date + '\n' ;
 	var endTime = obj.end.dateTime != undefined ? 'End time: ' + obj.end.dateTime + '\n' :
 												  'End time: ' + obj.end.date + '\n' ;
-	console.log('<pre class="ok">' + description + location + startTime + endTime + '</pre>');
+	//console.log('<pre class="ok">' + description + location + startTime + endTime + '</pre>');
 	return '<pre class="ok">' + description + summary + location + startTime + endTime + '</pre>';
 }
