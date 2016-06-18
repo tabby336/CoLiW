@@ -4,11 +4,14 @@ var data = require('../auth')(),
 var oauth = oauthModule.oauth;
 
 
-exports.refreshTokens = function(req, provider) {
+exports.refreshTokens = function(req, provider, callback) {
 
 	oauth.auth(provider, req.session, {
     	force_refresh: true
 	});
+
+
+    console.log(req.session.oauth.google_calendar);
 
 	console.log(req.session.oauth[provider].refreshed);
 	if(req.session.oauth[provider].refreshed == true) {
@@ -24,5 +27,5 @@ exports.refreshTokens = function(req, provider) {
              console.log('Database update problem: ' + err);
         });
 	} 
-	return;
+    callback('');
 }

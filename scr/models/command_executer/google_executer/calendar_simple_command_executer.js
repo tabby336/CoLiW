@@ -2,6 +2,10 @@ var calendarCommandExecuter = require('./calendar_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
 var outputFormat = require('../../../controllers/format_output');
 var util = require('../../../controllers/utils_validation');
+var credentialsUtils = require('../oauth_refresh_token');
+
+var oauthModule = require('../../../controllers/oauth');
+var oauth = oauthModule.oauth;
 
 function events(req, res, obj) {
 	if (obj.c == undefined) {
@@ -72,8 +76,16 @@ function insert(req, res, obj) {
 
 exports.execute = function(req, res, obj) {
 	//console.log(JSON.stringify(obj));
-	switch (obj.action) {
-		case "events": events(req, res, obj); break;
-		case "insert": insert(req, res, obj); break;
-	}
+	//credentialsUtils.refreshTokens(req, 'google_calendar', function(_) {
+	oauth.refreshCredentials(req.session.oauth.google_calendar, req.session)
+	.then(function(request_object) {
+		switch (obj.action) {
+			case "events": events(req, res, obj); break;
+			case "insert": insert(req, res, obj); break;
+		}
+	})
+	.fail(function(e) {
+		console.log(e);
+	});
+	//});
 }

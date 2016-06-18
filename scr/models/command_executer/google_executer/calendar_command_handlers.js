@@ -54,7 +54,7 @@ exports.insert = function(req, res, event) {
         resource: event
       }, function(err, response) {
       if (err) {
-        console.log('Ups eroare!');
+        console.log(err);
         reject(err);
       }
       resolve(response);
