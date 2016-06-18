@@ -32,3 +32,9 @@ exports.calendarEventFormat = function (obj) {
 	//console.log('<pre class="ok">' + description + location + startTime + endTime + '</pre>');
 	return '<pre class="ok">' + description + summary + location + startTime + endTime + '</pre>';
 }
+
+exports.calendarInsertFormat = function(obj) {
+	var message = 'A new event have been added to your calendar. You can edit it here: \n';
+	var url = 'URL: <a href="' + obj.htmlLink +'">' + obj.htmlLink + "</a>";
+	return '<pre class="ok">' + message + url  + '</pre>';
+}

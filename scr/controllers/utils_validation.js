@@ -147,8 +147,9 @@ exports.getDateValid = function(date) {
 }
 
 exports.getValidDateJSON = function(date) {
-  if (!isIntOrSpacel(date)) return false;
+  if (!isIntOrSpacel(date)) return undefined;
   var units = date.trim().split(/\s+/);
+  console.log('UNITS$$$$   '  + units);
   if (units.length != 5) return undefined;
   var obj = {
               'day': units[2] + " " + units[1] + " " + units[0],

@@ -1,7 +1,7 @@
 var calendarCommandExecuter = require('./calendar_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
 var outputFormat = require('../../../controllers/format_output');
-var utils = require('../../../controllers/utils_validation');
+var util = require('../../../controllers/utils_validation');
 
 function events(req, res, obj) {
 	if (obj.c == undefined) {
@@ -31,11 +31,42 @@ function events(req, res, obj) {
 	});
 }
 
+function transformToISO(obj) {
+	var date = new Date(obj.day);
+	date.setHours( obj.hour); 
+	date.setMinutes(obj.minutes);
+	console.log("23456789876543212345678   " + date);
+	return date;
+}
+
+function createEventObj(obj) {
+	var event = {start: {}, end: {}};
+
+	if (obj.d != undefined) {
+		event.start.date = utils.getValidDate(obj.d).toISOString().slice(0, 10);
+		event.end.date = utils.getValidDate(obj.d).toISOString().slice(0, 10);
+	}
+	if (obj.p != undefined) {
+		var interval = commandObj.p.split('-');
+		event.start.dateTime = transformToISO(util.getValidDateJSON(interval[0]));
+		event.end.dateTime = transformToISO(util.getValidDateJSON(interval[1]));
+	}
+	if (obj.s != undefined) {
+		event.summary = obj.s;
+	}
+	if (obj.l != undefined) {
+		event.location = obj.l;
+	}
+
+	return event;
+}
+
 function insert(req, res, obj) {
-	calendarCommandExecuter.insert(req, res, {}).then(function(response) {
-		console.log('OK!!!! '  + response);
+	var event = createEventObj(obj);
+	calendarCommandExecuter.insert(req, res, event).then(function(response) {
+		toClient.send(req, res, outputFormat.calendarInsertFormat(response));
 	}).catch(function(error){
-		console.log('ERROR!!! ' + error);
+		toClient.send(req, res, outputFormat.errorMessage('An error has occurred.'));
 	});
 }
 

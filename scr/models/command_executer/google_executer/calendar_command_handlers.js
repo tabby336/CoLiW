@@ -44,15 +44,6 @@ exports.listEvents = function(req, res, date, count) {
 } 
 
 exports.insert = function(req, res, event) {
-  event = {
-  "start": {
-    "dateTime": new Date().toISOString()
-  },
-  "end": {
-    "dateTime": new Date('2016 12 17').toISOString()
-  }
-}
-
   var auth = calendarCredentialsInit(req, res);
   return new Promise(function(resolve, reject) {
     var calendar = google.calendar('v3');
