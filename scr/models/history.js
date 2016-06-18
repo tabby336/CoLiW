@@ -22,8 +22,8 @@ exports.getNthCommand = function(req, res, n) {
     });
 }
 
-exports.getUsername = function(req, res) {
-    var user_id = req.session.passport.user;
+exports.getUsername = function(user_id, callback) {
+    //var user_id = req.session.passport.user;
     if(typeof user_id !== undefined ) {
         var qb = data.ApiUser.query()
         .select('email')
@@ -31,13 +31,16 @@ exports.getUsername = function(req, res) {
         .then(function(result) {
             var un = result[0]['email'];
             un = un.substr(0, un.indexOf('@'));
-            console.log(un);
+            //console.log(un);
+            callback(un);
         })
         .catch(function(error) {
-            console.log("guest");
+            //console.log("guest");
+            callback("guest");
         })
 
     } else {
-        console.log("guest");
+        //console.log("guest");
+        callback("guest");
     }
 }

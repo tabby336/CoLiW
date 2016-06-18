@@ -44,6 +44,12 @@ exports.registerPost = function(req, res) {
 }
 
 exports.checkLogin = function(req, res, next) {
+
+    //if(req.isAuthenticated()) {
+    //    toClient.send(req, res, "Must logout first!");
+    //    return;
+    //}
+
     console.log('Username: ' + req.body.un);
     console.log('Password: ' + req.body.pw);
     passport.authenticate('local', function(err, user, info) {
@@ -72,10 +78,9 @@ exports.checkLogin = function(req, res, next) {
                         req.session.oauth = JSON.parse(oauth_session);
                     }
                 }
-                console.log('login succesfully ' + req.session.oauth);
+                console.log('login succesfully');
                 toClient.send(req, res, outputFormat.okMessage('Login succesfully.'));  
                 req.logout();
-                return;
             }, function(err) {
                 console.log(err);
             });

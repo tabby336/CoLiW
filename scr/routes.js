@@ -19,7 +19,7 @@ module.exports = function (app, passport) {
 
     // Home
     app.get('/', indexController.home);
-    app.get('/home', ensureAuthenticated, indexController.userHome);
+    //app.get('/home', ensureAuthenticated, indexController.userHome);
 
     app.get('/history', history.getUsername)
 

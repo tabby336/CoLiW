@@ -5,6 +5,10 @@ var newPopUpWindow;
 var inputLeft = '';
 var inputRigth = '';
 
+var username = 'guest';
+var expected_un = '';
+//console.log("LALALAAAAAA" + username);
+
 var blink = angular.module('blink', [])
     .directive('blink', function($timeout) {
     return {
@@ -34,6 +38,17 @@ function sendToServer(queryObj) {
         async: false
     });
     $.post('/authProviders',queryObj,function(data) {
+
+            if(data.indexOf('Logout succesfully.') > -1) {
+                username = 'guest';
+                document.getElementById('un').innerText = username;
+            }
+
+            if(data.indexOf('Login succesfully.') > -1) {
+                username = expected_un.substr(0, expected_un.indexOf('@'));
+                document.getElementById('un').innerText = username;
+            }
+
             $('#linie_principala').before('<div class="line">'+data+'</div>');
             $("html, body").animate({ scrollTop: 10000000000 });
         }).fail(function(data) {
@@ -41,7 +56,7 @@ function sendToServer(queryObj) {
                 newPopUpWindow = window.open(window.location.href + data.responseText, "DescriptiveWindowName",
     "width=420,height=230,resizable,scrollbars=yes,status=1");
                 
-	var windowInterval = setInterval(checkIfWindowClosed,500);
+    var windowInterval = setInterval(checkIfWindowClosed,500);
                 function checkIfWindowClosed() {
                     if(newPopUpWindow.closed) {
                         console.log('eventually closed');
@@ -65,10 +80,20 @@ function enterPressed() {
     console.log(status != undefined);
 
     if (status == 'noSpecial' && newCommand.trim().toString() === 'login') {
-        status = 'login';
-        $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
-        $("html, body").animate({ scrollTop: 10000000000 });
-        return;
+        username = document.getElementById('un').innerText;
+        console.log(username);
+
+        if(username !== 'guest') {
+            status = 'error';
+            $('#linie_principala').before('<div class="line">'+ 'Please logout first.' +'</div>');
+            $("html, body").animate({ scrollTop: 10000000000 });
+        } else {
+            status = 'login';
+            $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
+            $("html, body").animate({ scrollTop: 10000000000 });
+            return;
+        }
+        
     }
 
     if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
@@ -78,9 +103,17 @@ function enterPressed() {
         return;
     }
 
+    //if (status === 'noSpecial' && newCommand.trim().toString() === 'logout') {
+    //    console.log('username');
+    //    username = 'guest';
+    //}
+
     switch (status) {
         case 'noSpecial': console.log('noua comanda');sendToServer({cmd: newCommand}); break;
         case 'login': 
+            expected_un = newCommand;
+            console.log(expected_un);
+
             reqObj = {cmd: 'login', un: newCommand}; 
             status = 'loginPassword'; 
             $('#linie_principala').before('<div class="line">'+ 'Please enter your password.' +'</div>');
@@ -114,6 +147,7 @@ function enterPressed() {
             $("#command").attr('type', 'text');
             sendToServer(reqObj); 
         break;
+        case 'error': status = 'noSpecial'; break;
     }
 }
 
@@ -145,7 +179,7 @@ function printCommand() {
 
 
 $(document).on('keypress', function(event) {
-    console.log(event);
+    //console.log(event);
     switch (event.which) {
         case 0: if (event.key == 'ArrowRight') {
                     if (inputLeft == undefined) {inputLeft = ''};

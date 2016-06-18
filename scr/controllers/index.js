@@ -1,5 +1,5 @@
-var rendering = require('../util/rendering');
-
+var rendering = require('../util/rendering'),
+    db = require('../models/history');
 
 exports.home = function(req, res) {
     if(req.query.cmd !== undefined) {
@@ -8,14 +8,13 @@ exports.home = function(req, res) {
       res.redirect('/authProviders');
       return;
     }
-    res.render('index/index2');
+    //console.log("LALA " + db.getUsername(req.session.passport.user));
+    db.getUsername(req.session.passport.user, function(result) {
+    	console.log(result);
+    	res.render('index/index2', {username: result});
+    })
+    //res.render('index/index2');
 }
-
-
-exports.userHome = function(req, res) {
-    res.render('index/user-home');
-}
-
 
 exports.successAuth = function(req, res) {
   res.render('index/success');
