@@ -100,10 +100,19 @@ function enterPressed() {
     }
 
     if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
-        status = 'register';
-        $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
-        $("html, body").animate({ scrollTop: 10000000000 });
-        return;
+        username = document.getElementById('un').innerText;
+        console.log(username);
+        
+        if(username !== 'guest') {
+            status = 'error';
+            $('#linie_principala').before('<div class="line">'+ 'Please logout first.' +'</div>');
+            $("html, body").animate({ scrollTop: 10000000000 });
+        } else {
+            status = 'register';
+            $('#linie_principala').before('<div class="line">'+ 'Please enter your username.' +'</div>');
+            $("html, body").animate({ scrollTop: 10000000000 });
+            return;
+        }
     }
 
     //if (status === 'noSpecial' && newCommand.trim().toString() === 'logout') {
