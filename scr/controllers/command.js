@@ -37,20 +37,9 @@ exports.redirect = function(result, req,res) {
     };
 
 exports.authProviders = function(req, res) {
-  /*res.header('Access-Control-Allow-Credentials: true');
-  res.header("Access-Control-Request-Headers", "x-requested-with");
-  res.header("Access-Control-Allow-Headers", "x-requested-with");*/
   var redir = false;
   var cmd =  req.body.cmd; //command
   console.log('*****' + cmd);
-
-//   var d1 = new Date(); 
-// var d2 = new Date('2016 07 05');
-// d1.setHours(+d2.getHours()+6 ); 
-// d1.setMinutes(new Date().getMinutes()); 
-// console.log(d1.getHours()+":"+d1.getMinutes());
-// console.log(d1);
-// return;
 
   req.session.cmd = cmd;
 
