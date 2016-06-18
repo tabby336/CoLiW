@@ -9,7 +9,7 @@ var googleAuth = require('google-auth-library');
   var TOKEN_PATH =  TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 
 function transform(date) {
-  if (date == undefined) return undefined;
+  if (date == undefined) return undefined;  
   var partsOfDate = date.split(' ');
   var partsOfDateOk = [];
   for (var i = 0; i < partsOfDate.length; ++i) {

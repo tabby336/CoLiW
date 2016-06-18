@@ -43,6 +43,14 @@ exports.authProviders = function(req, res) {
   var cmd =  req.body.cmd; //command
   console.log('*****' + cmd);
 
+//   var d1 = new Date(); 
+// var d2 = new Date('2016 07 05');
+// d1.setHours(+d2.getHours()+6 ); 
+// d1.setMinutes(new Date().getMinutes()); 
+// console.log(d1.getHours()+":"+d1.getMinutes());
+// console.log(d1);
+// return;
+
   req.session.cmd = cmd;
 
   console.log('noua comanda este :' + req.session.cmd);

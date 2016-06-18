@@ -9,3 +9,7 @@ calendar events -d "sdfg"
 calendar events -m "Buna"
 calendar events -d "04 03 1836" -c 2
 calendar events -d "04 03 1836" -c 22s
+
+calendar insert -d "17 12 2016" -s "Ziua mamei" -l "Acasa"
+calendar insert -d "17 90 2016" -s "Ziua mamei" -l "Acasa"
+calendar insert -p "17 12 2016 18:00 - 17 12 2016 23 30" -s "Moms birthday party" -l "Acasa"

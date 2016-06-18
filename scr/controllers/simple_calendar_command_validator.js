@@ -1,46 +1,48 @@
 var util = require('./utils_validation');
 
-filterInt = function (value) {
-  if(/[0-9]+/.test(value))
-    return Number(value);
-  return NaN;
+exports.validateCalendarAction = function(commandObj) {
+	console.log("##############Va valida calendarul  " + JSON.stringify(commandObj));
+  switch (commandObj.action) {
+    case "events": return validateMaybeDateOrCountHints(commandObj); break;
+    case "insert": return validateInsertParameter(commandObj) && validateInsertParameterValue(commandObj); break;
+    default: return false; break;
+  }
 }
 
-function transform(date) {
-	var partsOfDate = date.split(' ');
-	var partsOfDateOk = [];
-	for (var i = 0; i < partsOfDate.length; ++i) {
-		if (partsOfDate[i] != '') {
-			partsOfDateOk.push(partsOfDate[i]);
-		}
+function validateInsertParameter(commandObj) {
+	var nrUnits = 3;
+	nrUnits += commandObj.hasOwnProperty('s') ? 1 : 0;
+	nrUnits += commandObj.hasOwnProperty('l') ? 1 : 0;
+	return (commandObj.hasOwnProperty('p') ^ commandObj.hasOwnProperty('d')) && 
+		   (Object.keys(commandObj).length == nrUnits);
+}
+
+function validateInsertParameterValue(commandObj) {
+	if (commandObj.d != undefined) {
+		return util.isDateValid(commandObj.d);
 	}
-	if (partsOfDateOk.length != 3) return 'x';
-	return partsOfDateOk[2] + " " + partsOfDateOk[1] + " " + partsOfDateOk[0];
+	var interval = commandObj.p.split('-');
+	interval[0] = util.getValidDateJSON(interval[0]);
+	interval[1] = util.getValidDateJSON(interval[1]);
+	if (interval[0] == undefined || interval[1] == undefined) {
+		return false;
+	}
+	return true;
 }
 
 function validateMaybeDateOrCountHints(commandObj) {
 	if (commandObj.d != undefined) {
-		var newDateFormat = transform(commandObj.d);
+		var newDateFormat = util.transform(commandObj.d);
 		var x =  Date.parse(newDateFormat);
 		if (isNaN(Date.parse(newDateFormat))) {
-			commandObj.d = newDateFormat;
 			return false;
 		}	
-	}  
-	//console.log('$%^&*(*&^%$#@#$%^&*&^%$#@Q \n\n' + parseInt(commandObj.c));
-	if (commandObj.c != undefined && isNaN(filterInt(commandObj.c))) {
+	}
+	if (commandObj.c != undefined && util.isInt(commandObj.c)) {
 		return false;
 	}
 	return (Object.keys(commandObj).length == 4 && commandObj.d != undefined && commandObj.c != undefined) ||
 	       (Object.keys(commandObj).length == 3 && commandObj.d != undefined) ||
 	       (Object.keys(commandObj).length == 3 && commandObj.c != undefined) ||
 	       (Object.keys(commandObj).length == 2);
-}
-
-exports.validateCalendarAction = function(commandObj) {
-	//console.log("##############Va valida calendarul  " + JSON.stringify(commandObj));
-  switch (commandObj.action) {
-    case "events": return validateMaybeDateOrCountHints(commandObj); break;
-    default: return false; break;
-  }
 }
