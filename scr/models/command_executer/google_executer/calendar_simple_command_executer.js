@@ -34,5 +34,6 @@ exports.execute = function(req, res, obj) {
 	//console.log(JSON.stringify(obj));
 	switch (obj.action) {
 		case "events": events(req, res, obj); break;
+		case "insert": events(req, res, obj); break;
 	}
 }

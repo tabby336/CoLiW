@@ -19,7 +19,7 @@ function validateInsertParameter(commandObj) {
 
 function validateInsertParameterValue(commandObj) {
 	if (commandObj.d != undefined) {
-		return util.isDateValid(commandObj.d);
+		return util.getDateValid(commandObj.d) != undefined;
 	}
 	var interval = commandObj.p.split('-');
 	interval[0] = util.getValidDateJSON(interval[0]);
@@ -32,11 +32,7 @@ function validateInsertParameterValue(commandObj) {
 
 function validateMaybeDateOrCountHints(commandObj) {
 	if (commandObj.d != undefined) {
-		var newDateFormat = util.transform(commandObj.d);
-		var x =  Date.parse(newDateFormat);
-		if (isNaN(Date.parse(newDateFormat))) {
-			return false;
-		}	
+		return util.getDateValid(commandObj.d) != undefined;
 	}
 	if (commandObj.c != undefined && util.isInt(commandObj.c)) {
 		return false;

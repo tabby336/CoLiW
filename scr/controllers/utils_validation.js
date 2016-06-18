@@ -133,11 +133,17 @@ function getSimpleCommandParts(cmd) {
   return commandParts;
 }
 
-exports.isDateValid = function(date) {
-  if (!isIntOrSpace(commandObj.d)) return false;
-  var units = commandObj.d.trim().split(/\s+/).length;
-  if (units.length != 3) return false;
-  return isNaN(Date.parse(units[2] + " " + units[1] + " " + units[0]));
+exports.getDateValid = function(date) {
+  if (!isIntOrSpace(date)) return undefined;
+  var units = date.trim().split(/\s+/);
+  console.log('&&#^$  ' + units);
+  if (units.length != 3) return undefined;
+  if (isNaN(Date.parse(units[2] + " " + units[1] + " " + units[0]))) {
+    return undefined
+  }
+  else {
+    return new Date(units[2] + " " + units[1] + " " + units[0]);
+  }
 }
 
 exports.getValidDateJSON = function(date) {
@@ -180,16 +186,4 @@ function isIntOrSpace(value) {
     if ((value[i] < '0'  && value[i] != ' ') || value[i] > '9') return false;
   }
   return true;
-}
-
-exports.transform = function(date) {
-  var partsOfDate = date.split(' ');
-  var partsOfDateOk = [];
-  for (var i = 0; i < partsOfDate.length; ++i) {
-    if (partsOfDate[i] != '') {
-      partsOfDateOk.push(partsOfDate[i]);
-    }
-  }
-  if (partsOfDateOk.length != 3) return 'x';
-  return partsOfDateOk[2] + " " + partsOfDateOk[1] + " " + partsOfDateOk[0];
 }
