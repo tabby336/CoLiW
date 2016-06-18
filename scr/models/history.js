@@ -1,9 +1,15 @@
 var data = require('./auth')();
+var toClient = require('../controllers/send_to_client');
 
-exports.getNthCommand = function(req, res, n) {
+exports.getNthCommand = function(req, res) {
 	var user_id = req.session.passport.user;
-	
-	//n = 5;
+    var n = req.body.number;
+    console.log('Sageatuta isi face treaba ' + JSON.stringify(req.body));	
+
+    if (n == 0) {
+        toClient.send(req, res, '');
+        return;
+    }
 
 	var qb = data.ApiHistory.query();
   	qb
@@ -12,13 +18,10 @@ exports.getNthCommand = function(req, res, n) {
     .orderBy('time', 'DESC')
     .limit(n)
     .then(function(result){
-        //return ??
-        //count starts from 0
-       	console.log(result[n-1]['command']);
+        toClient.send(req, res, result[n-1]['command']);
     })
     .catch(function(error) {
-        //return ??
-        console.log("no command");
+        toClient.send(req, res, '');
     });
 }
 

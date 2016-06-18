@@ -1,9 +1,11 @@
 var status = 'noSpecial';
+var arrowCount = 0;
 var reqObj = {};
 var newCommand = '';
 var newPopUpWindow;
 var inputLeft = '';
 var inputRigth = '';
+var input = '';
 
 var username = 'guest';
 var expected_un = '';
@@ -74,6 +76,7 @@ function enterPressed() {
     newCommand = inputLeft + inputRigth;
     inputLeft = '';
     inputRigth = '';
+    arrowCount = 0;
     console.log(newCommand);
     console.log('Status   ' + status);
     console.log(newCommand.trim().toString() === 'login');
@@ -151,11 +154,6 @@ function enterPressed() {
     }
 }
 
-function linkPressed(cmd) {
-    cmd = cmd.trim();
-}
-
-var input = '';
 
 function replaceWithStars(input) {
     var replacedInput = '';
@@ -177,23 +175,52 @@ function printCommand() {
     }
 }
 
+function getCommandFromHistory() {
+    console.log('Aducem imediat din baza de date comanda');
+    var queryObj = {number: arrowCount};
+    $.ajaxSetup({
+        async: false
+    });
+    console.log(queryObj);
+    $.post('/history',queryObj,function(data) {
+        inputLeft = data;
+        inputRigth = '';
+    }).fail(function(data) {
+    });
+}
+
+function arrowPressed(arrow) {
+    switch (arrow) {
+        case 'ArrowRight':
+            if (inputLeft == undefined) {inputLeft = ''};
+            if (inputRigth.length > 0) {
+                inputLeft = inputLeft + inputRigth[0] ; 
+                inputRigth = inputRigth.substring(1, inputRigth.length);
+            } break;
+        case 'ArrowLeft': 
+            if (inputRigth == undefined) {inputRigth = ''};
+            if (inputLeft.length > 0) {
+                inputRigth = inputLeft[inputLeft.length - 1] + inputRigth ; 
+                inputLeft = inputLeft.substring(0, inputLeft.length - 1);
+            } break;
+        case 'ArrowUp':
+            ++arrowCount; 
+            getCommandFromHistory();
+            break;
+        case 'ArrowDown':
+            if (arrowCount > 0) {
+                --arrowCount; 
+            }
+            getCommandFromHistory();
+            break;
+    }
+}
+
 
 $(document).on('keypress', function(event) {
     //console.log(event);
     switch (event.which) {
-        case 0: if (event.key == 'ArrowRight') {
-                    if (inputLeft == undefined) {inputLeft = ''};
-                    if (inputRigth.length > 0) {
-                        inputLeft = inputLeft + inputRigth[0] ; 
-                        inputRigth = inputRigth.substring(1, inputRigth.length);
-                    }
-                } else if (event.key == 'ArrowLeft') { 
-                    if (inputRigth == undefined) {inputRigth = ''};
-                    if (inputLeft.length > 0) {
-                        inputRigth = inputLeft[inputLeft.length - 1] + inputRigth ; 
-                        inputLeft = inputLeft.substring(0, inputLeft.length - 1);
-                    }
-                } break;
+        case 0: arrowPressed(event.key); break;
         case 8: inputLeft = inputLeft.substring(0, inputLeft.length - 1); break;
         case 13: enterPressed(); break;
         default: 
