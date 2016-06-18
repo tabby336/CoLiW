@@ -2,24 +2,12 @@ var fs = require('fs');
 var readline = require('readline');
 var google = require('googleapis');
 var googleAuth = require('google-auth-library');
+var util = require('../../../controllers/utils_validation');
 
  var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
       process.env.USERPROFILE) + '/.credentials/';
   var TOKEN_PATH =  TOKEN_DIR + 'calendar-nodejs-quickstart.json';
-
-function transform(date) {
-  if (date == undefined) return undefined;  
-  var partsOfDate = date.split(' ');
-  var partsOfDateOk = [];
-  for (var i = 0; i < partsOfDate.length; ++i) {
-    if (partsOfDate[i] != '') {
-      partsOfDateOk.push(partsOfDate[i]);
-    }
-  }
-  if (partsOfDateOk.length != 3) return 'x';
-  return partsOfDateOk[2] + " " + partsOfDateOk[1] + " " + partsOfDateOk[0];
-}
 
 function calendarCredentialsInit(req, res) {
   var clientSecret = 'Pmcs50vSOTF84kDp1M2uXnW1';
@@ -38,12 +26,7 @@ exports.listEvents = function(req, res, date, count) {
   var auth  = calendarCredentialsInit(req, res);
   return new Promise(function(resolve, reject) {
     var calendar = google.calendar('v3');
-    var auth = calendarCredentialsInit(req, res);
-    console.log('got var calendar');
-    date = transform(date);
-    var dateFormated = date != undefined ? new Date(date) : new Date();
-    console.log('###############    ' + dateFormated);
-    console.log('###############    ' + count);
+    var dateFormated = date != undefined ? util.getDateValid(date) : new Date();
     calendar.events.list({
       auth: auth,
       calendarId: 'primary',
@@ -59,3 +42,31 @@ exports.listEvents = function(req, res, date, count) {
     });
   });
 } 
+
+exports.insert = function(req, res, event) {
+  event = {
+  "start": {
+    "dateTime": new Date().toISOString()
+  },
+  "end": {
+    "dateTime": new Date('2016 12 17').toISOString()
+  }
+}
+
+  var auth = calendarCredentialsInit(req, res);
+  return new Promise(function(resolve, reject) {
+    var calendar = google.calendar('v3');
+    calendar.events.insert(
+      {
+        auth: auth,
+        calendarId: 'primary',
+        resource: event
+      }, function(err, response) {
+      if (err) {
+        console.log('Ups eroare!');
+        reject(err);
+      }
+      resolve(response);
+    });
+  });
+}

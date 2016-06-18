@@ -1,6 +1,7 @@
 var calendarCommandExecuter = require('./calendar_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
 var outputFormat = require('../../../controllers/format_output');
+var utils = require('../../../controllers/utils_validation');
 
 function events(req, res, obj) {
 	if (obj.c == undefined) {
@@ -30,10 +31,18 @@ function events(req, res, obj) {
 	});
 }
 
+function insert(req, res, obj) {
+	calendarCommandExecuter.insert(req, res, {}).then(function(response) {
+		console.log('OK!!!! '  + response);
+	}).catch(function(error){
+		console.log('ERROR!!! ' + error);
+	});
+}
+
 exports.execute = function(req, res, obj) {
 	//console.log(JSON.stringify(obj));
 	switch (obj.action) {
 		case "events": events(req, res, obj); break;
-		case "insert": events(req, res, obj); break;
+		case "insert": insert(req, res, obj); break;
 	}
 }
