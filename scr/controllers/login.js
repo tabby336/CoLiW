@@ -72,9 +72,10 @@ exports.checkLogin = function(req, res, next) {
                         req.session.oauth = JSON.parse(oauth_session);
                     }
                 }
-                console.log('login succesfully');
+                console.log('login succesfully ' + req.session.oauth);
                 toClient.send(req, res, outputFormat.okMessage('Login succesfully.'));  
                 req.logout();
+                return;
             }, function(err) {
                 console.log(err);
             });

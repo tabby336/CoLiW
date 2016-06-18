@@ -5,6 +5,7 @@ var commandExecute = require('../models/command_executer/command_executer_factor
 var data = require('../models/auth')();
 var toClient = require('./send_to_client');
 var outputFotmat = require('./format_output');
+var FB = require('fb');
 
 
 var dropboxController = require('../models/command_executer/dropbox_executer/dropbox_command_handlers');
@@ -71,6 +72,7 @@ exports.authProviders = function(req, res) {
     case 'dropbox': dropboxController.getFile(req,res); return; break;
 
     default: 
+    console.log(req.session.passport);
       if(req.session.passport.user === undefined) {
         toClient.send(req, res, outputFotmat.errorMessage('You must be logged in first'));
         return;

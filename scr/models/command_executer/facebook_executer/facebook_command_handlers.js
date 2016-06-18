@@ -5,22 +5,14 @@ var request = require('request');
 
 exports.facebookFeedPostMessage = function(req, text, url) {
   return new Promise(function(resolve, reject) {
-    var obj;
-    if (url !=  undefined && text !=undefined) {
-      obj = {"message":text, "link": url};
+    var obj = {};
+    if (text != undefined) {
+      obj.message = text;
     }
-    else
-     if (text != undefined) {
-       obj = {"message":text};
-     }
-     else
-      if (url !=  undefined) {
-        obj = {"link": url};
-      } 
-      else {
-        reject("Invalid parameters");
-      }
-    console.log(obj);
+    if (url !=  undefined) {
+      obj.link = url;
+    }
+    
    	FB.setAccessToken(req.session.oauth.facebook.access_token);	
   	FB.api('/me/feed', 'post', obj, function (res) {
       console.log('\n\n\n\n' + JSON.stringify(res));
