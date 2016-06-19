@@ -91,8 +91,12 @@ exports.checkLogin = function(req, res, next) {
 
 exports.logout = function(req, res) {
     console.log("Logged out!!")
-    delete req.session['oauth'];   
-    delete req.session.passport['user'];
-    toClient.send(req, res, outputFormat.okMessage('Logout succesfully.'));  
+    if(typeof req.session.passport.user === undefined) {
+        toClient.send(req, res, outputFormat.okMessage('You are not logged in anyway.'));
+    } else {
+        delete req.session['oauth'];   
+        delete req.session.passport['user'];
+        toClient.send(req, res, outputFormat.okMessage('Logout succesfully.'));  
+    }
     req.logout();
 }
