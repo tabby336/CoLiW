@@ -2,6 +2,8 @@ var Twitter = require('twitter');
 var fs = require('fs');
 var path = require('path');
 
+var Promise = require('es6-promise').Promise;
+
 exports.getTweeterClient = function(req){
   var client = new Twitter({
     consumer_key: 'NvWJzavpcdtLIPGPB1TQhMWUM',
