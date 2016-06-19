@@ -7,6 +7,7 @@ console.log("\n*\n" + JSON.stringify(res.headers));
 function getProvider(partialName) {
   switch (partialName) {
     case 'calendar': return 'google_calendar';
+    case 'joke': return undefined;
     default: return partialName;
   }
 }
@@ -20,7 +21,7 @@ exports.authenticate = function(req, res) {
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
   var provider1 = getProvider(obj1.provider);
-  if (obj1 != undefined && (req.session.oauth === undefined || 
+  if (provider1 != undefined && (req.session.oauth === undefined || 
                 !req.session.oauth.hasOwnProperty(provider1.toString().trim()))) {
   	res.status(412).end(provider1);
     return;

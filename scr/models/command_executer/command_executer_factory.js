@@ -14,6 +14,9 @@ var youtubeDoubleCommandExecuter = require('./youtube_executer/youtube_double_co
 //calendar
 var calendarSimpleCommandExecuter = require('./google_executer/calendar_simple_command_executer'); 
 
+//joke
+var jokeSimpleCommandExecuter = require('./jokes_executer/jokes_simple_command_executer'); 
+
 function executeSimpleCommand(req, res, splitedCommand) {
 	var obj = utils.getCommadObject(splitedCommand[0]);
 	switch (obj.provider) {
@@ -24,6 +27,8 @@ function executeSimpleCommand(req, res, splitedCommand) {
 		case "youtube": youtubeSimpleCommandExecuter.execute(req, res, obj);
 			break;
 		case "calendar": calendarSimpleCommandExecuter.execute(req, res, obj);
+			break;
+		case "joke": jokeSimpleCommandExecuter.execute(req, res, obj);
 			break;
 	}
 } 
