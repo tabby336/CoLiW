@@ -3,6 +3,8 @@ var FB = require('fb');
 var fs  = require('fs');
 var request = require('request');
 
+var Promise = require('es6-promise').Promise;
+
 exports.facebookFeedPostMessage = function(req, text, url) {
   return new Promise(function(resolve, reject) {
     var obj = {};

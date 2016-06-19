@@ -1,4 +1,7 @@
 http = require('http');
+
+var Promise = require('es6-promise').Promise;
+
 exports.getJoke = function(req, res, firstName, lastName) {
   var options = {
     host: 'api.icndb.com', //'yesno.wtf',

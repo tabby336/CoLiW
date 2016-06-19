@@ -1,5 +1,7 @@
 var YouTube = require('youtube-node');
 
+var Promise = require('es6-promise').Promise;
+
 exports.search = function(req, text) {
 	return new Promise(function(resolve, reject) {
 		var youTube = new YouTube();
