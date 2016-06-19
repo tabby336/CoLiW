@@ -47,8 +47,8 @@ function createEventObj(obj) {
 	var event = {start: {}, end: {}};
 
 	if (obj.d != undefined) {
-		event.start.date = utils.getValidDate(obj.d).toISOString().slice(0, 10);
-		event.end.date = utils.getValidDate(obj.d).toISOString().slice(0, 10);
+		event.start.date = util.getDateValid(obj.d).toISOString().slice(0, 10);
+		event.end.date = util.getDateValid(obj.d).toISOString().slice(0, 10);
 	}
 	if (obj.p != undefined) {
 		var interval = commandObj.p.split('-');

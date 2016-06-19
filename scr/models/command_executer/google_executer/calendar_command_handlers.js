@@ -4,7 +4,7 @@ var google = require('googleapis');
 var googleAuth = require('google-auth-library');
 var util = require('../../../controllers/utils_validation');
 
-var Promise = require('es6-promise').Promise;
+//var Promise = require('es6-promise').Promise;
 
  var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
   var TOKEN_DIR = (process.env.HOME || process.env.HOMEPATH ||
