@@ -102,7 +102,7 @@ function enterPressed() {
     if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
         username = document.getElementById('un').innerText;
         console.log(username);
-        
+
         if(username !== 'guest') {
             status = 'error';
             $('#linie_principala').before('<div class="line">'+ 'Please logout first.' +'</div>');
@@ -230,12 +230,17 @@ $(document).on('keypress', function(event) {
     //console.log(event);
     switch (event.which) {
         case 0: arrowPressed(event.key); break;
-        case 8: inputLeft = inputLeft.substring(0, inputLeft.length - 1); break;
+        case 8: 
+            inputLeft = inputLeft.substring(0, inputLeft.length - 1); 
+            event.preventDefault();
+            break;
         case 13: enterPressed(); break;
         default: 
             if (!event.ctrlKey) {
                 inputLeft = inputLeft + String.fromCharCode(event.which); 
-            } break;
+            } 
+            event.preventDefault();
+            break;
     }
 
     printCommand();

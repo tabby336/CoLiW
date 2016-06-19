@@ -1,3 +1,42 @@
+@media screen and (min-width:960px) {
+  .container {
+    border-radius: 25px;
+    width: 960px;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (max-width:480px) {
+  .container {
+    border-radius: 25px;
+    width: 400px;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (max-width:960px) {
+  .container {
+    border-radius: 25px;
+    width: 720px;
+    margin: 0 auto;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 2%;
+    padding-right: 2%;
+  }
+}
+
+
 body {
   font-family: monospace;
   font-size: 13px;
@@ -5,9 +44,11 @@ body {
   background-color: #272822;
 }
 
+/*
 .container {
   padding: 60px 15px 0;
 }
+*/
 
 .out-of-sight {
   position: absolute;
@@ -61,3 +102,7 @@ body {
 .error {
   color: red;
 }
+
+
+
+
