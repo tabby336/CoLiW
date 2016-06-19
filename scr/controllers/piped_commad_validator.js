@@ -1,5 +1,6 @@
 var twitter = require('./piped_twitter_command_validator');
 var youtube = require('./piped_youtube_command_validator');
+var joke = require('./piped_joke_command_validator');
 var utils = require('./utils_validation');
 
 exports.validatePipedCommand = function(cmd) {
@@ -13,6 +14,7 @@ exports.validatePipedCommand = function(cmd) {
   switch (commandObj1.provider) {
     case "twitter": return twitter.validateTwitterAction(commandObj1, commandObj2); break;
     case "youtube": return youtube.validateYoutubeAction(commandObj1, commandObj2); break;
+    case "joke": return joke.validateJokeAction(commandObj1, commandObj2); break;
     default: return false; break;
   }
 }

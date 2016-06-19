@@ -16,6 +16,7 @@ var calendarSimpleCommandExecuter = require('./google_executer/calendar_simple_c
 
 //joke
 var jokeSimpleCommandExecuter = require('./jokes_executer/jokes_simple_command_executer'); 
+var jokeDoubleCommandExecuter = require('./jokes_executer/jokes_double_command_executer');
 
 function executeSimpleCommand(req, res, splitedCommand) {
 	var obj = utils.getCommadObject(splitedCommand[0]);
@@ -40,6 +41,8 @@ function executeDoubleCommand(req, res, splitedCommand) {
 		case "twitter": twitterDoubleCommandExecuter.execute(req, res, obj1, obj2);
 			break;
 		case "youtube": youtubeDoubleCommandExecuter.execute(req, res, obj1, obj2);
+			break;
+		case "joke": jokeDoubleCommandExecuter.execute(req, res, obj1, obj2);
 			break;
 	}
 }
