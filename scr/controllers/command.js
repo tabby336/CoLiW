@@ -72,6 +72,14 @@ exports.authProviders = function(req, res) {
         authentication_handler.authenticate(req, res);
       }
       else {
+
+        new data.ApiHistory({id: req.session.passport.user, command: cmd})
+        .save(null, {method: 'insert'})
+        .then(function(model) {
+        },function(err) {
+          console.log(err);
+        });
+        
         toClient.send(req, res, outputFotmat.errorMessage('Command format is not valid!'));
       }
       console.log('splitedCommand: ' + splitedCommand);

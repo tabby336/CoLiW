@@ -41,23 +41,23 @@ module.exports = function (app, passport) {
       }
     };
     
-    
+    /*
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/google_calendar', cors(corsOptions), oauth.auth('google_calendar', "http://54.149.64.177:3000/oauth/redirect"));
-    
+    */
 
-    /*
+    
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://localhost:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));
     app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
     app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
     app.get('/google_calendar', cors(corsOptions), oauth.auth('google_calendar', "http://localhost:3000/oauth/redirect"));
-    */
+    
 
     app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
         console.log("In oauth redirect");
@@ -70,19 +70,14 @@ module.exports = function (app, passport) {
         result.me().done(function(me) {
             var user_id = req.session.passport.user;
             var ses = JSON.stringify(req.session.oauth);
-            //new data.ApiOauth({id: user_id, oauth_session: ses})
             new data.ApiOauth({oauth_session: ses}).where('id', user_id)
             .save(null, {method: 'update'})
             .then(function(model) {
               console.log('Autentificarea a fost facuta');
-              //validationHandler.authenticate(req.session.cmd);
               res.redirect('/afterAuthentication');
-             // res.status(412).end('');
             }, function(err) {
                 console.log("Eroare la redirect " + err);
-                //res.redirect("/authProviders?cmd=" + command);  
             });
-            //res.redirect("/authProviders?cmd=" + command);
         });
     }));
 
