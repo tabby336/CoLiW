@@ -102,7 +102,7 @@ function enterPressed() {
     if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
         username = document.getElementById('un').innerText;
         console.log(username);
-
+        
         if(username !== 'guest') {
             status = 'error';
             $('#linie_principala').before('<div class="line">'+ 'Please logout first.' +'</div>');
@@ -225,25 +225,61 @@ function arrowPressed(arrow) {
     }
 }
 
+function arrowRight() {
+    if (inputLeft == undefined) {inputLeft = ''};
+    if (inputRigth.length > 0) {
+        inputLeft = inputLeft + inputRigth[0] ; 
+        inputRigth = inputRigth.substring(1, inputRigth.length);
+    } 
+}
 
-$(document).on('keypress', function(event) {
+function arrowLeft() {
+    if (inputRigth == undefined) {inputRigth = ''};
+    if (inputLeft.length > 0) {
+        inputRigth = inputLeft[inputLeft.length - 1] + inputRigth ; 
+        inputLeft = inputLeft.substring(0, inputLeft.length - 1);
+    } 
+}
+
+function arrowUp() {
+     ++arrowCount; 
+    getCommandFromHistory();    
+}
+
+function arrowDown() {    
+    if (arrowCount > 0) {
+        --arrowCount; 
+    }
+    getCommandFromHistory();
+}
+
+
+$(document).on('keydown', function(event) {
     //console.log(event);
-    switch (event.which) {
-        case 0: arrowPressed(event.key); break;
-        case 8: 
-            inputLeft = inputLeft.substring(0, inputLeft.length - 1); 
-            event.preventDefault();
-            break;
+    event = event || window.event;
+    var charCode = event.keyCode || event.which;
+    switch (charCode) {
+        case 8: inputLeft = inputLeft.substring(0, inputLeft.length - 1); break;
         case 13: enterPressed(); break;
-        default: 
-            if (!event.ctrlKey) {
-                inputLeft = inputLeft + String.fromCharCode(event.which); 
-            } 
-            event.preventDefault();
-            break;
+        case 37: arrowLeft();break;
+        case 38: arrowUp(); break;
+        case 39: arrowRight(); break;
+        case 40: arrowDown();  break;
     }
 
     printCommand();
+});
+
+$(document).on('keypress', function(event) {
+    console.log(event);
+    event = event || window.event;
+    var charCode = event.keyCode || event.which;
+    if (charCode != 8 && charCode != 13 && charCode != 37  && charCode != 38  && charCode != 39  && charCode != 40 ) {
+        if (!event.ctrlKey) {
+            inputLeft = inputLeft + String.fromCharCode(event.which); 
+            printCommand();
+        } 
+    }
 });
 
 document.addEventListener("paste", function (e) {
