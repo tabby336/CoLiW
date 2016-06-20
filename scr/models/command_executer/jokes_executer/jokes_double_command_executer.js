@@ -1,5 +1,6 @@
 var twitterSimpleCommandExecuter = require('../twitter_executer/twitter_simple_command_executer');
 var facebookSimpleCommandExecuter = require('../facebook_executer/facebook_simple_command_executer');
+var gmailSimpleCommandExecuter = require('../gmail_executer/gmail_simple_command_executer');
 var jokesCommandHandlers = require('./jokes_command_handler');
 var toClient = require('../../../controllers/send_to_client');
 var outputFormat = require('../../../controllers/format_output');
@@ -13,6 +14,12 @@ var executeSecondCommand = function (req, res, joke, obj2) {
 	if (obj2.provider == 'twitter' && obj2.action == 'tweet') {
 		obj2.m = joke;
 		twitterSimpleCommandExecuter.execute(req, res, obj2);
+		return;
+	}
+	if (obj2.provider == 'gmail' && obj2.action == 'send') {
+		obj2.c = joke;
+		obj2.s = 'Joke'
+		gmailSimpleCommandExecuter.execute(req, res, obj2);
 		return;
 	}
 }

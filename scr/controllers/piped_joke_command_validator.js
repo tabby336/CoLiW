@@ -2,7 +2,8 @@ var util = require('./utils_validation');
 
 function validateSecondCommandForGet(commandObj) {
   return (commandObj.provider === "twitter" && commandObj.action === "tweet" && util.validateNoHints(commandObj)) ||
-         (commandObj.provider === "facebook" && commandObj.action === "post" && util.validateNoHints(commandObj));
+         (commandObj.provider === "facebook" && commandObj.action === "post" && util.validateNoHints(commandObj)) ||
+     	 (commandObj.provider === "gmail" && commandObj.action === "send" && util.validateToOnlyHints(commandObj));
 }
 
 exports.validateJokeAction = function(commandObj1, commandObj2) {

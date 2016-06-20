@@ -17,6 +17,10 @@ exports.validaterIdOnlyHints = function(commandObj) {
   return false;
 }
 
+exports.validateToOnlyHints = function(commandObj) {
+  return commandObj.t != undefined && Object.keys(commandObj).length == 3;
+}
+
 exports.validateIdOrNameHints = function(commandObj) {
   if (commandObj.i != undefined && Object.keys(commandObj).length - 2 == 1) {
     return true;
@@ -65,6 +69,7 @@ function addToCommandObj(commandObj, hint, hintValue) {
     case "-d": console.log("d"); commandObj.d = cutQuote(hintValue); break;
     case "-s": console.log("s"); commandObj.s = cutQuote(hintValue); break;
     case "-l": console.log("l"); commandObj.l = cutQuote(hintValue); break;
+    case "-t": console.log("t"); commandObj.t = cutQuote(hintValue); break;
     default: return undefined;
   }
   return commandObj;
