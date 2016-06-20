@@ -33,7 +33,7 @@ exports.help = function() {
                   '&nbsp;&nbsp;&nbsp; -i "unique-id" <br>' +
                   '&nbsp;&nbsp;&nbsp; one of -n and -i is mandatory, returns the last 15 tweets of the person. <br>' +
 
-                  '<br><br>'  
+                  '<br><br>' +
 
                '</div>';
     return help;

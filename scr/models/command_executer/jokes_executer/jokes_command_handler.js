@@ -2,6 +2,26 @@ http = require('http');
 
 var Promise = require('es6-promise').Promise;
 
+exports.help = function() {
+  var help = '<div>' + 
+                  '<p> <b>Jokes commands:<b> </p> <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; jokes <b>get</b> <br>' +
+                  '&nbsp;&nbsp;&nbsp; Gets a Chuck Norris joke. <br>' +
+
+                  '<br>' + 
+
+                  '&nbsp; Jokes commands can also be pipped with twitter and facebook post and also gmail. <br>' +
+
+                  '<br><br>'  +
+
+               '</div>';
+  return help;
+}
+
+
 exports.getJoke = function(req, res, firstName, lastName) {
   var options = {
     host: 'api.icndb.com', //'yesno.wtf',

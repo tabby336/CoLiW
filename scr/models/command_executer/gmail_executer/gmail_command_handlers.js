@@ -10,6 +10,24 @@ var TOKEN_PATH =  TOKEN_DIR + 'calendar-nodejs-quickstart.json';
 
 var Promise = require('es6-promise').Promise;
 
+exports.help = function() {
+  var help = '<div>' + 
+                  '<p> <b>Gmail commands:<b> </p> <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; gmail -t "to" [-s "subject"] [-c "content"] <br>' +
+                  '&nbsp;&nbsp;&nbsp; -t target email address <br>' +
+                  '&nbsp;&nbsp;&nbsp; -s mail\'s subject <br>' +
+                  '&nbsp;&nbsp;&nbsp; -c mail\'s content <br>' +
+
+                  '<br><br>'  +
+
+               '</div>';
+  return help;
+}
+
+
 function gmailCredentialsInit(req, res) {
   var clientSecret = 'Pmcs50vSOTF84kDp1M2uXnW1';
   var clientId = '236929257927-4ufgbhet0fb2b5ultlscjt71vvge9fnc.apps.googleusercontent.com';

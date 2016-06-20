@@ -13,7 +13,7 @@ exports.help = function(req, res) {
 
                   '<br>' +
 
-                  '&nbsp; Youtube commands can also be pipped with youtube and facebook post. <br>' + 
+                  '&nbsp; Youtube commands can also be pipped with twitter and facebook post. <br>' + 
 
                   '<br><br>'  +
 

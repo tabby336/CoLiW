@@ -24,6 +24,33 @@ function calendarCredentialsInit(req, res) {
   return oauth2Client;
 }
 
+exports.help = function() {
+  var help = '<div>' + 
+                  '<p> <b>Calendar commands:<b> </p> <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; calendar <b>events</b> [-d "date"] [-c "# of events"] <br>' +
+                  '&nbsp;&nbsp;&nbsp; -d date in format "dd mm yyyy" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -c the number of events you want to see <br>' +
+                  '&nbsp;&nbsp;&nbsp; Both parameters can be used' +
+
+                  '<br>' +
+
+                  '&nbsp; calendar <b>insert</b> -d "date" | -p "period" [-s "subject"] [-l "location"] <br>' +
+                  '&nbsp;&nbsp;&nbsp; -d date in format "dd mm yyyy" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -p the period in the format "<it>from - to</it>" <br>' + 
+                  '&nbsp;&nbsp;&nbsp;&nbsp; where <it>from</it> and <it>to</it> are of form "dd mm yyyy hh mm" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -s the subject of the event. <br>' +
+                  '&nbsp;&nbsp;&nbsp; -l the location of the event. <br>' +
+                  '&nbsp;&nbsp;&nbsp; One of -d or -p arguments is mandatory. <br>' +
+
+                  '<br><br>'  +
+
+              '</div>';
+  return help;
+}
+
 exports.listEvents = function(req, res, date, count) {
   var auth  = calendarCredentialsInit(req, res);
   return new Promise(function(resolve, reject) {

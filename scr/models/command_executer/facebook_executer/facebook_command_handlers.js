@@ -23,7 +23,7 @@ exports.help = function() {
                   '&nbsp; facebook <b>upload</b> -u "url" [-m "message"] <br>' +
                   '&nbsp;&nbsp;&nbsp; url is mandatory, message is optional. <br>' +
 
-                  '<br><br>'  
+                  '<br><br>' +
 
                '</div>';
     return help;
