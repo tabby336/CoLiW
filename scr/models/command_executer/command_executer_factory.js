@@ -18,6 +18,9 @@ var calendarSimpleCommandExecuter = require('./google_executer/calendar_simple_c
 var jokeSimpleCommandExecuter = require('./jokes_executer/jokes_simple_command_executer'); 
 var jokeDoubleCommandExecuter = require('./jokes_executer/jokes_double_command_executer');
 
+//gmail
+var gmailSimpleCommandExecuter = require('./gmail_executer/gmail_simple_command_executer'); 
+
 function executeSimpleCommand(req, res, splitedCommand) {
 	var obj = utils.getCommadObject(splitedCommand[0]);
 	switch (obj.provider) {
@@ -30,6 +33,8 @@ function executeSimpleCommand(req, res, splitedCommand) {
 		case "calendar": calendarSimpleCommandExecuter.execute(req, res, obj);
 			break;
 		case "joke": jokeSimpleCommandExecuter.execute(req, res, obj);
+			break;
+		case "gmail": gmailSimpleCommandExecuter.execute(req, res, obj);
 			break;
 	}
 } 
