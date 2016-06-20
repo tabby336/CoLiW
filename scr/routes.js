@@ -22,7 +22,6 @@ module.exports = function (app, passport) {
 
     // Home
     app.get('/', indexController.home);
-    //app.get('/home', ensureAuthenticated, indexController.userHome);
 
     app.post('/history', history.getNthCommand);
 
@@ -42,23 +41,23 @@ module.exports = function (app, passport) {
       }
     };
     
-    
+    /*
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/google_calendar', cors(corsOptions), oauth.auth('google_calendar', "http://54.149.64.177:3000/oauth/redirect"));
-    
+    */
 
-    /*
+    
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://localhost:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));
     app.get('/dropbox', cors(corsOptions),  oauth.auth('dropbox', "http://localhost:3000/oauth/redirect"));
     app.get('/youtube', cors(corsOptions),  oauth.auth('youtube', "http://localhost:3000/oauth/redirect"));
     app.get('/google_calendar', cors(corsOptions), oauth.auth('google_calendar', "http://localhost:3000/oauth/redirect"));
-    */
+    
 
     app.get('/oauth/redirect', oauth.redirect(function(result, req, res) {
         console.log("In oauth redirect");
