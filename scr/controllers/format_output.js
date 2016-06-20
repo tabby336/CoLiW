@@ -1,9 +1,9 @@
 exports.errorMessage = function(input) {
-	return '<p class="error">' + input + '</p>';
+	return '<p style="display:inline" class="error">' + input + '</p>';
 }
 
 exports.okMessage = function(input){
-	return '<p class="ok">' + input + '</p>';
+	return '<p style="display:inline" class="ok">' + input + '</p>';
 }
 
 exports.tweetsFromSearch = function(tweet) {

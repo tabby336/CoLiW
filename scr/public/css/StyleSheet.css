@@ -50,6 +50,16 @@ body {
 }
 */
 
+/*
+div {
+  display: inline
+}
+*/
+
+p {
+  display: inline
+}
+
 .out-of-sight {
   position: absolute;
   top: -100px;
