@@ -9,6 +9,7 @@ function getProvider(partialName) {
     case 'calendar': return 'google_calendar';
     case 'gmail': return 'google_mail';
     case 'joke': return undefined;
+    case 'youtube': return undefined;
     default: return partialName;
   }
 }
