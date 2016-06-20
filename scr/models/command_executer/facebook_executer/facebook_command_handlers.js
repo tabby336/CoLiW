@@ -3,7 +3,33 @@ var FB = require('fb');
 var fs  = require('fs');
 var request = require('request');
 
+var toClient = require('../../../controllers/send_to_client');
+
 var Promise = require('es6-promise').Promise;
+
+exports.help = function() {
+    var help = '<div>' + 
+                  '<p> <b>Facebook commands:<b> </p> <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; facebook <b>post</b> <br>' +
+                  '&nbsp;&nbsp;&nbsp; -m "message" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -u "url" <br>' + 
+                  '&nbsp;&nbsp;&nbsp; One of them is mandatory, both can be used. <br>' +
+
+                  '<br>' + 
+
+                  '&nbsp; facebook <b>upload</b> -u "url" [-m "message"] <br>' +
+                  '&nbsp;&nbsp;&nbsp; url is mandatory, message is optional. <br>' +
+
+                  '<br><br>'  
+
+               '</div>';
+    return help;
+    
+}
+
 
 exports.facebookFeedPostMessage = function(req, text, url) {
   return new Promise(function(resolve, reject) {

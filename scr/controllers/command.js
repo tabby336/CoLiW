@@ -7,8 +7,7 @@ var toClient = require('./send_to_client');
 var outputFotmat = require('./format_output');
 var x = require('../models/command_executer/gmail_executer/gmail_simple_command_executer');
 
-
-var dropboxController = require('../models/command_executer/dropbox_executer/dropbox_command_handlers');
+var help = require('../models/command_executer/help_executer/help_handler');
 
 var oauth = require('oauthio');
 
@@ -59,6 +58,8 @@ exports.authProviders = function(req, res) {
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case 'dropbox': dropboxController.getFile(req,res); return; break;
+
+    case 'help': help.help(req, res); return; break;
 
     default: 
     console.log(req.session.passport);

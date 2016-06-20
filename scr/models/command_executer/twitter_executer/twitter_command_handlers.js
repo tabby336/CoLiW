@@ -4,6 +4,43 @@ var path = require('path');
 
 var Promise = require('es6-promise').Promise;
 
+
+exports.help = function() {
+    var help = '<div>' + 
+                  '<p> <b>Twitter commands:<b> </p> <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; twitter <b>tweet</b> -m "message"<br>' +
+                  '&nbsp;&nbsp;&nbsp; -m argument is mandatory. <br>' +
+
+                  '<br>' + 
+
+                  '&nbsp; twitter <b>search</b> -m "message" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -n argument is mandatory, returns 15 tweets matching the message. <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; twitter <b>follow</b> <br>' +
+                  '&nbsp;&nbsp;&nbsp; -n "username" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -i "unique-id" <br>' +
+                  '&nbsp;&nbsp;&nbsp; one of -m and -i is mandatory <br>' +
+
+                  '<br>' +
+
+                  '&nbsp; twitter <b>activity</b> <br>' +
+                  '&nbsp;&nbsp;&nbsp; -n "username" <br>' +
+                  '&nbsp;&nbsp;&nbsp; -i "unique-id" <br>' +
+                  '&nbsp;&nbsp;&nbsp; one of -n and -i is mandatory, returns the last 15 tweets of the person. <br>' +
+
+                  '<br><br>'  
+
+               '</div>';
+    return help;
+    
+}
+
+
 exports.getTweeterClient = function(req){
   var client = new Twitter({
     consumer_key: 'NvWJzavpcdtLIPGPB1TQhMWUM',
