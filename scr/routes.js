@@ -5,11 +5,7 @@ var rendering = require('./util/rendering'),
     data = require('./models/auth')(),
     validationHandler = require('./controllers/detect_providers'),
     cors = require('cors');
-
-
-
-
-var history = require('./models/history.js');
+    history = require('./models/history.js');
 
 var oauthModule = require('./controllers/oauth');
 var oauth = oauthModule.oauth;
@@ -17,12 +13,11 @@ var oauth = oauthModule.oauth;
 module.exports = function (app, passport) {
 
     var self = this;
-    var provider = 'twitter';
-    var cmd = 'twitter caca';
-
+    
     // Home
     app.get('/', indexController.home);
 
+    // History 
     app.post('/history', history.getNthCommand);
 
 
@@ -40,7 +35,7 @@ module.exports = function (app, passport) {
       }
     };
     
-    
+    // Production
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://54.149.64.177:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://54.149.64.177:3000/oauth/redirect"));
@@ -50,6 +45,7 @@ module.exports = function (app, passport) {
     
 
     /*
+    // Local testing
     app.get('/twitter', cors(corsOptions), oauth.auth('twitter', "http://localhost:3000/oauth/redirect"));
     app.get('/facebook', cors(corsOptions),  oauth.auth('facebook', "http://localhost:3000/oauth/redirect"));
     app.get('/google_mail', cors(corsOptions),  oauth.auth('google_mail', "http://localhost:3000/oauth/redirect"));

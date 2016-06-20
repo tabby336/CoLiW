@@ -5,14 +5,9 @@ var commandExecute = require('../models/command_executer/command_executer_factor
 var data = require('../models/auth')();
 var toClient = require('./send_to_client');
 var outputFotmat = require('./format_output');
-var x = require('../models/command_executer/gmail_executer/gmail_simple_command_executer');
-
 var help = require('../models/command_executer/help_executer/help_handler');
 
-var oauth = require('oauthio');
-
-oauth.initialize('PZs45acODMBvV6W7BZGR4Lu_4gM', 'nN_dg-16ggVkuSqc38sg_FBwpMs');
-
+// 
 exports.redirect = function(result, req,res) {
         console.log("Am in /oauth/redirect");
         console.log(req);
@@ -35,23 +30,14 @@ exports.redirect = function(result, req,res) {
         });
     };
 
+
+// Function used to identify which route the command shoud take
 exports.authProviders = function(req, res) {
   var redir = false;
   var cmd =  req.body.cmd; //command
   console.log('*****' + cmd);
 
   req.session.cmd = cmd;
-
-  console.log('noua comanda este :' + req.session.cmd);
-
-  if (req.session.oauth!=undefined) {
-    console.log('sesiune oauth este twitter' + req.session.oauth.twitter);
-    console.log('sesiune oauth este facebook' + req.session.oauth.facebook);
-    console.log('sesiune oauth este youtube' + req.session.oauth.youtube);
-  }
-  else {
-    console.log('req.session.oauth == undefined');
-  }
 
   switch(cmd.replace(/[ ]/g, '')) {
     case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
@@ -60,22 +46,23 @@ exports.authProviders = function(req, res) {
 
     default: 
 
+      // Help command
       if (cmd.indexOf('help') == 0 ) {
         help.help(req, res, cmd); return;
       }
 
-    //console.log(req.session.passport);
+      // Check if authenticated
       if(req.session.passport.user === undefined) {
         toClient.send(req, res, outputFotmat.errorMessage('You must be logged in first'));
         return;
       }
       var splitedCommand = commandValidator.isValid(cmd); 
-      if (splitedCommand) {
+      if (splitedCommand) { // if valid, login with providers
         console.log('se face autentificarea');
         authentication_handler.authenticate(req, res);
       }
       else {
-
+        // Database insert
         new data.ApiHistory({id: req.session.passport.user, command: cmd})
         .save(null, {method: 'insert'})
         .then(function(model) {
@@ -90,14 +77,13 @@ exports.authProviders = function(req, res) {
   }
 }
 
-exports.commandInterpret = function(req, res) {
-  console.log("Am in commandInterpret" + "\n");
-  //console.log(req.session.oauth);
 
+// Funcion used to launch the command in execution
+exports.commandInterpret = function(req, res) {
   var cmd = req.session.cmd;
   console.log('Sunt in command interpret  ' + req.session.cmd);
-  //console.log('************************************\n\n\n' + JSON.stringify(req.session.oauth));
-  
+
+  // Database insert
   new data.ApiHistory({id: req.session.passport.user, command: cmd})
   .save(null, {method: 'insert'})
   .then(function(model) {

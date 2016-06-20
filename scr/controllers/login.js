@@ -1,10 +1,10 @@
 var crypto = require('crypto'),
     passport = require('passport'),
-    data = require('../models/auth')();
-var toClient = require('./send_to_client');
-var outputFormat = require('./format_output');
+    data = require('../models/auth')(),
+    toClient = require('./send_to_client'),
+    outputFormat = require('./format_output');
 
-
+// Function called to process register parameters
 exports.registerPost = function(req, res) {
     var vpw = req.body.vpw;
     var pwu = req.body.pw;
@@ -43,15 +43,9 @@ exports.registerPost = function(req, res) {
     });
 }
 
+// Function used to process login parameters
 exports.checkLogin = function(req, res, next) {
 
-    //if(req.isAuthenticated()) {
-    //    toClient.send(req, res, "Must logout first!");
-    //    return;
-    //}
-
-    console.log('Username: ' + req.body.un);
-    console.log('Password: ' + req.body.pw);
     passport.authenticate('local', function(err, user, info) {
         if (err || !user) {
             req.flash('username', req.body.un);
@@ -88,7 +82,7 @@ exports.checkLogin = function(req, res, next) {
     })(req, res, next);
 }
 
-
+// Function used to logout the user
 exports.logout = function(req, res) {
     console.log("Logged out!!")
     console.log(req.session);

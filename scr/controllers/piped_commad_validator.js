@@ -3,6 +3,8 @@ var youtube = require('./piped_youtube_command_validator');
 var joke = require('./piped_joke_command_validator');
 var utils = require('./utils_validation');
 
+
+// Name self explanatory
 exports.validatePipedCommand = function(cmd) {
   var commandParts = cmd.split('|');
   console.log('***commandParts: ' + commandParts);

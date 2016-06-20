@@ -1,3 +1,5 @@
+
+// Function ued to validate the format a facebook command
 exports.validateFacebookAction = function(commandObj) {
   switch (commandObj.action) {
     case "post": return validateFacebookPostHints(commandObj); break;
@@ -6,6 +8,12 @@ exports.validateFacebookAction = function(commandObj) {
   }
 }
 
+
+/*
+  Helper functions
+*/
+
+// Function validates the post hints (message, url)
 function validateFacebookPostHints(commandObj) {
   console.log(commandObj.m + "***********" + commandObj.u);
   console.log(commandObj.m != undefined);
@@ -22,6 +30,8 @@ function validateFacebookPostHints(commandObj) {
   return false;
 }
 
+
+// Function validates the upload hints (url, message)
 function validateFacebookUploadHints(commandObj) {
   if (commandObj.u != undefined ^ commandObj.p !=undefined) {
     if (commandObj.m != undefined && Object.keys(commandObj).length - 2 == 2) {
@@ -34,6 +44,7 @@ function validateFacebookUploadHints(commandObj) {
   return false;
 }
 
+// Function validates the action
 function validateFacebookAction(commandObj) {
   switch (commandObj.action) {
     case "post": return validateFacebookPostHints(commandObj); break;

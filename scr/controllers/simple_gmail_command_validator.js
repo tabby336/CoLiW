@@ -1,3 +1,4 @@
+// Helper function
 function validateSendHints(commandObj) {
 	var nrUnits = 3;
 	nrUnits += commandObj.hasOwnProperty('s') ? 1 : 0;
@@ -6,6 +7,7 @@ function validateSendHints(commandObj) {
 	return true;
 }
 
+// Function validates the gmail action
 exports.validateGmailAction = function(commandObj) {
   switch (commandObj.action) {
     case "send": return validateSendHints(commandObj); break;

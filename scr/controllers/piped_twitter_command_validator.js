@@ -1,5 +1,6 @@
 var util = require('./utils_validation');
 
+// Function used to validate commands containing 'twitter' as the second part of the pipe
 function validateSecondCommandForSearch(commandObj) {
   if (commandObj.provider === "twitter") {
 	  switch (commandObj.action) {
@@ -11,6 +12,7 @@ function validateSecondCommandForSearch(commandObj) {
   return false;
 }
 
+// Actual validator
 exports.validateTwitterAction = function(commandObj1, commandObj2) {
   switch (commandObj1.action) {
     case "search": 

@@ -1,5 +1,7 @@
 var util = require('./utils_validation');
 
+
+// Function used to check if the action for google calendar is a valid one
 exports.validateCalendarAction = function(commandObj) {
 	console.log("##############Va valida calendarul  " + JSON.stringify(commandObj));
   switch (commandObj.action) {
@@ -9,6 +11,12 @@ exports.validateCalendarAction = function(commandObj) {
   }
 }
 
+/*
+ Helper functions
+ */
+
+
+ // Function validates if the insert has correct parameters
 function validateInsertParameter(commandObj) {
 	var nrUnits = 3;
 	nrUnits += commandObj.hasOwnProperty('s') ? 1 : 0;
@@ -17,6 +25,7 @@ function validateInsertParameter(commandObj) {
 		   (Object.keys(commandObj).length == nrUnits);
 }
 
+// Function validates the content of the parameters
 function validateInsertParameterValue(commandObj) {
 	if (commandObj.d != undefined) {
 		return util.getDateValid(commandObj.d) != undefined;

@@ -6,6 +6,7 @@ var joke = require('./simple_joke_command_validator');
 var utils = require('./utils_validation');
 var gmail = require('./simple_gmail_command_validator');
 
+// Name self explanatory
 exports.validateSimpleCommand = function(cmd) {
   commandObj = utils.getCommadObject(cmd);
   if (commandObj == undefined) return false;

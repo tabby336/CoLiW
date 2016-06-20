@@ -1,3 +1,8 @@
+/*
+Functions used to format the output from commands.
+Names self explanatory.
+*/
+
 exports.errorMessage = function(input) {
 	return '<p class="error">' + input + '</p>';
 }

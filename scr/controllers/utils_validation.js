@@ -1,3 +1,7 @@
+/*
+  Auxiliaty validate options for commands
+*/
+
 exports.validateMessageOnlyHints = function(commandObj) {
   if (commandObj.m != undefined && Object.keys(commandObj).length - 2 == 1) {
     return true;
@@ -169,6 +173,9 @@ exports.getValidDateJSON = function(date) {
   return obj;
 }
 
+/*
+  Helper functions
+*/
 
 function isIntOrSpacel(value) {
   value = value.trim();

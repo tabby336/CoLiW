@@ -1,5 +1,6 @@
 var util = require('./utils_validation');
 
+// Name self explanatory
 exports.validateTwitterAction = function(commandObj) {
   switch (commandObj.action) {
     case "tweet": return util.validateMessageOnlyHints(commandObj); break;

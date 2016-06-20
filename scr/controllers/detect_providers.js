@@ -1,25 +1,24 @@
 var utils = require('./utils_validation');
 
 function next(res) {
-console.log("\n*\n" + JSON.stringify(res.headers));
+  console.log("\n*\n" + JSON.stringify(res.headers));
 }
 
+// Function used to get the provider in a OauthIO friendly way
 function getProvider(partialName) {
   switch (partialName) {
-    case 'calendar': return 'google_calendar';
-    case 'gmail': return 'google_mail';
-    case 'joke': return undefined;
-    case 'youtube': return undefined;
-    default: return partialName;
+    case 'calendar': return 'google_calendar'; // actual oauth provider name
+    case 'gmail': return 'google_mail'; 
+    case 'joke': return undefined; // does not require login
+    case 'youtube': return undefined; 
+    default: return partialName; // same as in the command
   }
 }
 
+// Function check if there is any more authentication to do with providers from the command
 exports.authenticate = function(req, res) {
   var cmd = req.session.cmd;
   var splitedCommand = cmd.split('|');
-
-  //console.log("Comanda mea este: " + cmd);
- // console.log(req.session.oauth);
 
   var obj1 = utils.getCommadObject(splitedCommand[0]);
   var provider1 = getProvider(obj1.provider);
@@ -45,6 +44,7 @@ exports.authenticate = function(req, res) {
   return;
 };
 
+// Redirected here if there's need for the second auth with providers
 exports.afterAnAuthentication = function(req, res) {
   var splitedCommand = req.session.cmd.split('|');
   var obj2 = undefined;
@@ -58,5 +58,4 @@ exports.afterAnAuthentication = function(req, res) {
     } 
   }
   res.redirect('/successAuth');
-  //res.redirect('/command');
 }
