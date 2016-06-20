@@ -25,6 +25,31 @@ exports.getNthCommand = function(req, res) {
     });
 }
 
+exports.getHistory = function(req, res) {
+    var user_id = req.session.passport.user;
+
+    var history = ''
+
+    var qb = data.ApiHistory.query(); 
+    qb
+    .select('command')
+    .where('id', '=',  user_id)
+    .orderBy('time', 'DESC')
+    .limit(10)
+    .then(function(result) {
+        console.log(result.length);
+        //for(var count = 0; count < result.length; ++count) {
+        for(var count = result.length - 1 ; count >= 0; --count ) {
+            history = history + '<div><p>' + result[count]['command'] + '</p></div>';
+        }
+        toClient.send(req, res, history);
+    })
+    .catch(function(error) {
+        toClient.send(req, res, '');
+    });
+
+}
+
 exports.getUsername = function(user_id, callback) {
     //var user_id = req.session.passport.user;
     if(typeof user_id !== undefined ) {

@@ -87,13 +87,10 @@ function enterPressed() {
     if(newCommand === 'clear') {
         $('.line').remove();  
         inputLeft = '';
-        inputRigth = '';      
+        inputRigth = '';
         return ;
     }
 
-
-
-    console.log('dupa if');
     inputLeft = '';
     inputRigth = '';
     arrowCount = 0;
