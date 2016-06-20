@@ -239,10 +239,11 @@ function arrowUp() {
 }
 
 function arrowDown() {    
+    getCommandFromHistory();
     if (arrowCount > 0) {
         --arrowCount; 
     }
-    getCommandFromHistory();
+    //getCommandFromHistory();
 }
 
 
