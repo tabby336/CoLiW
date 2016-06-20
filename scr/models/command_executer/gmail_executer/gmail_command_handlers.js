@@ -58,7 +58,7 @@ exports.send = function(req, res, email) {
         console.log(response);
         if(response != null) {
           if (response.code!=undefined && parseInt(response.code) == 401) {
-            response.code(412).end('google_mail');
+            res.status(412).end('google_mail');
             return; 
           } else {
             reject('');    
