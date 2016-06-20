@@ -57,12 +57,14 @@ exports.authProviders = function(req, res) {
     case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
-    case 'dropbox': dropboxController.getFile(req,res); return; break;
-
-    case 'help': help.help(req, res); return; break;
 
     default: 
-    console.log(req.session.passport);
+
+      if (cmd.indexOf('help') == 0 ) {
+        help.help(req, res, cmd); return;
+      }
+
+    //console.log(req.session.passport);
       if(req.session.passport.user === undefined) {
         toClient.send(req, res, outputFotmat.errorMessage('You must be logged in first'));
         return;
