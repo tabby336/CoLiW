@@ -81,13 +81,21 @@ module.exports = function (app, passport) {
         });
     }));
 
+    // production error handler
+    // no stacktraces leaked to user
+    app.use(function(err, req, res, next) {
+     res.status(err.status || 500);
+     res.render('error', {
+     message: err.message,
+     error: {}
+    });
+    });
+
     //command
     app.post('/authProviders', commandController.authProviders);
     app.get('/authProviders', commandController.authProviders);
     app.get('/command', commandController.commandInterpret);
     app.get('/afterAuthentication', validationHandler.afterAnAuthentication);
-
-
     app.get('/successAuth', indexController.successAuth);
 
     // Auth Middleware
