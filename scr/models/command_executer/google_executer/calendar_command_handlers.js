@@ -37,11 +37,16 @@ exports.listEvents = function(req, res, date, count) {
       singleEvents: true,
       orderBy: 'startTime'
     }, function(err, response) {
-      if (err) {
-        reject(err);
-      }
-      resolve(response);
-    });
+          if (err != undefined ) {
+              if (parseInt(err.code) == 401) {
+                res.status(412).end('google_calendar');
+                return; 
+              } else {
+                reject(err);    
+              }
+          }
+          resolve(response);
+      });
   });
 } 
 
@@ -55,11 +60,15 @@ exports.insert = function(req, res, event) {
         calendarId: 'primary',
         resource: event
       }, function(err, response) {
-      if (err) {
-        console.log(err);
-        reject(err);
-      }
-      resolve(response);
-    });
+          if (err != undefined ) {
+              if (parseInt(err.code) == 401) {
+                res.status(412).end('google_calendar');
+                return; 
+              } else {
+                reject(err);    
+              }
+          }
+          resolve(response);
+        });
   });
 }
