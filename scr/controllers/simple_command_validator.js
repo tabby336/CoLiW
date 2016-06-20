@@ -4,6 +4,7 @@ var youtube = require('./simple_youtube_command_validator');
 var calendar = require('./simple_calendar_command_validator');
 var joke = require('./simple_joke_command_validator');
 var utils = require('./utils_validation');
+var gmail = require('./simple_gmail_command_validator');
 
 exports.validateSimpleCommand = function(cmd) {
   commandObj = utils.getCommadObject(cmd);
@@ -15,6 +16,7 @@ exports.validateSimpleCommand = function(cmd) {
     case "youtube": return youtube.validateYoutubeAction(commandObj); break;
     case "calendar": return calendar.validateCalendarAction(commandObj); break;
     case "joke": return joke.validateJokeAction(commandObj); break;
+    case "gmail": return gmail.validateGmailAction(commandObj); break;
     default: return false; break;
   }
 }
