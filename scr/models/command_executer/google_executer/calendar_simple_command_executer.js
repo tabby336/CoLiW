@@ -77,10 +77,8 @@ function insert(req, res, obj) {
 exports.execute = function(req, res, obj) {
 	//console.log(JSON.stringify(obj));
 	//credentialsUtils.refreshTokens(req, 'google_calendar', function(_) {
-	oauth.refreshCredentials('google_calendar', req.session)
+	oauth.refreshCredentials(req.session.oauth.google_calendar, req.session)
 	.then(function(request_object) {
-		console.log(request_object);
-		//console.log(req.session.oauth.google_calendar);
 		switch (obj.action) {
 			case "events": events(req, res, obj); break;
 			case "insert": insert(req, res, obj); break;

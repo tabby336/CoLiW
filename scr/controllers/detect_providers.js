@@ -7,6 +7,7 @@ console.log("\n*\n" + JSON.stringify(res.headers));
 function getProvider(partialName) {
   switch (partialName) {
     case 'calendar': return 'google_calendar';
+    case 'gmail': return 'google_mail';
     case 'joke': return undefined;
     default: return partialName;
   }

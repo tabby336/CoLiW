@@ -38,8 +38,8 @@ exports.send = function(req, res, email) {
       }
     }, function(response) {
         console.log(response);
-        if(response != null) {
-          reject();
+        if(response[0] != null) {
+          reject(response[0].error);
         }
         else {
           resolve();

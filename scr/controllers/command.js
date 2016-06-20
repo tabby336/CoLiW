@@ -5,9 +5,8 @@ var commandExecute = require('../models/command_executer/command_executer_factor
 var data = require('../models/auth')();
 var toClient = require('./send_to_client');
 var outputFotmat = require('./format_output');
-var FB = require('fb');
+var x = require('../models/command_executer/gmail_executer/gmail_simple_command_executer');
 
-var historyController = require('../models/history');
 
 var dropboxController = require('../models/command_executer/dropbox_executer/dropbox_command_handlers');
 
@@ -55,17 +54,12 @@ exports.authProviders = function(req, res) {
     console.log('req.session.oauth == undefined');
   }
 
-  switch(cmd.trim()) {
+  switch(cmd.replace(/[ ]/g, '')) {
     case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
-    case "history": 
-      if(req.session.passport.user === undefined) {
-        toClient.send(req, res, outputFotmat.errorMessage('You must be logged in first'));
-        return;
-      }
-      historyController.getHistory(req, res); return; 
-      break;
+    case 'dropbox': dropboxController.getFile(req,res); return; break;
+
     default: 
     console.log(req.session.passport);
       if(req.session.passport.user === undefined) {
@@ -85,7 +79,7 @@ exports.authProviders = function(req, res) {
         },function(err) {
           console.log(err);
         });
-
+        
         toClient.send(req, res, outputFotmat.errorMessage('Command format is not valid!'));
       }
       console.log('splitedCommand: ' + splitedCommand);
