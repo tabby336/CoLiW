@@ -35,7 +35,7 @@ function send(req, res, obj) {
 		console.log('Minunat, ai trimis mail!');
 		toClient.send(req, res, outputFormat.okMessage('You have sent an email.'));
 	})
-	.catch(function(){
+	.catch(function(error){
 		toClient.send(req, res, outputFormat.errorMessage('An error has occurred. ' + error));
 	});
 }
