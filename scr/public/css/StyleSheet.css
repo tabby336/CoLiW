@@ -24,7 +24,7 @@
   }
 }
 
-@media screen and (max-width:960px) {
+@media screen and (min-width: 480px) and (max-width:960px) {
   .container {
     border-radius: 25px;
     width: 720px;

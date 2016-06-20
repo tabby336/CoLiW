@@ -32,7 +32,6 @@ module.exports = function (app, passport) {
     app.get('/logout', loginController.logout);
 
     //OAuth & friends
-
     var whitelist = ['https://oauth.io', 'https://api.twitter.com'];
     var corsOptions = {
       origin: function(origin, callback){

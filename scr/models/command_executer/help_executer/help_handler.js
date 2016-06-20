@@ -8,7 +8,7 @@ var google_calendar = require('../google_executer/calendar_command_handlers');
 var toClient = require('../../../controllers/send_to_client');
 
 exports.help = function(req, res, cmd) {
-	splitted_help = cmd.replace(/\s+/g,' ').split(' ');
+	splitted_help = cmd.trim().replace(/\s+/g,' ').split(' ');
 	
 	console.log("THE LENGTH: " + splitted_help.length);
 	console.log(splitted_help[0]);
