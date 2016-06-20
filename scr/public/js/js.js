@@ -9,7 +9,6 @@ var input = '';
 
 var username = 'guest';
 var expected_un = '';
-//console.log("LALALAAAAAA" + username);
 
 var blink = angular.module('blink', [])
     .directive('blink', function($timeout) {
@@ -74,17 +73,17 @@ function sendToServer(queryObj) {
 
 function enterPressed() {
     newCommand = inputLeft + inputRigth;
+    username = document.getElementById('un').innerText;
+    $('#linie_principala').before('<div class="line">'+ username + ':~$ '+ newCommand + '</div>');
+    if(newCommand === '') {
+        return;
+    }
     inputLeft = '';
     inputRigth = '';
     arrowCount = 0;
-    console.log(newCommand);
-    console.log('Status   ' + status);
-    console.log(newCommand.trim().toString() === 'login');
-    console.log(status != undefined);
-
+    
     if (status == 'noSpecial' && newCommand.trim().toString() === 'login') {
         username = document.getElementById('un').innerText;
-        console.log(username);
 
         if(username !== 'guest') {
             status = 'error';
@@ -101,7 +100,6 @@ function enterPressed() {
 
     if (status === 'noSpecial' && newCommand.trim().toString() === 'register') {
         username = document.getElementById('un').innerText;
-        console.log(username);
         
         if(username !== 'guest') {
             status = 'error';
@@ -115,22 +113,14 @@ function enterPressed() {
         }
     }
 
-    //if (status === 'noSpecial' && newCommand.trim().toString() === 'logout') {
-    //    console.log('username');
-    //    username = 'guest';
-    //}
-
     switch (status) {
         case 'noSpecial': console.log('noua comanda');sendToServer({cmd: newCommand}); break;
         case 'login': 
             expected_un = newCommand;
-            console.log(expected_un);
-
             reqObj = {cmd: 'login', un: newCommand}; 
             status = 'loginPassword'; 
             $('#linie_principala').before('<div class="line">'+ 'Please enter your password.' +'</div>');
             $("html, body").animate({ scrollTop: 10000000000 });
-            //$("#command").attr('type', 'password'); 
         break;
         case  'loginPassword': 
             status = 'noSpecial';
@@ -139,19 +129,17 @@ function enterPressed() {
             sendToServer(reqObj); 
         break;
         case 'register':
-            console.log('register!!!');
             reqObj = {cmd: 'register', un: newCommand};
             status = 'registerPassword'; 
             $('#linie_principala').before('<div class="line">'+ 'Please enter your password.' +'</div>');
             $("html, body").animate({ scrollTop: 10000000000 });
-            //$("#command").attr('type', 'password'); 
         break;
         case 'registerPassword':
             reqObj.pw = newCommand;
             status = 'registerVerifyPassword'; 
             $('#linie_principala').before('<div class="line">'+ 'Please retype your password.' +'</div>');
             $("html, body").animate({ scrollTop: 10000000000 });
-            //$("#command").attr('type', 'password');
+
         break;
         case 'registerVerifyPassword':
             reqObj.vpw = newCommand;
@@ -185,7 +173,6 @@ function printCommand() {
 }
 
 function getCommandFromHistory() {
-    console.log('Aducem imediat din baza de date comanda');
     var queryObj = {number: arrowCount};
     $.ajaxSetup({
         async: false
@@ -255,7 +242,6 @@ function arrowDown() {
 
 
 $(document).on('keydown', function(event) {
-    //console.log(event);
     event = event || window.event;
     var charCode = event.keyCode || event.which;
     switch (charCode) {
@@ -266,12 +252,10 @@ $(document).on('keydown', function(event) {
         case 39: arrowRight(); break;
         case 40: arrowDown();  break;
     }
-
     printCommand();
 });
 
 $(document).on('keypress', function(event) {
-    console.log(event);
     event = event || window.event;
     var charCode = event.keyCode || event.which;
     if (charCode != 8 && charCode != 13 && charCode != 37  && charCode != 38  && charCode != 39  && charCode != 40 ) {
@@ -283,7 +267,6 @@ $(document).on('keypress', function(event) {
 });
 
 document.addEventListener("paste", function (e) {
-    console.log(e.target.id);
     var pastedText = undefined;
     if (window.clipboardData && window.clipboardData.getData) { // IE
         inputLeft = inputLeft + window.clipboardData.getData('Text');
