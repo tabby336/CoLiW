@@ -38,8 +38,14 @@ exports.send = function(req, res, email) {
       }
     }, function(response) {
         console.log(response);
-        if(response[0] != null) {
-          reject(response[0].error);
+        if(response != null) {
+          if (response.code!=undefined && parseInt(response.code) == 401) {
+            response.status(412).end('google_mail');
+            return; 
+          } else {
+            reject('');    
+          }
+          reject('');
         }
         else {
           resolve();
