@@ -51,7 +51,7 @@ function sendToServer(queryObj) {
             }
 
             $('#linie_principala').before('<div class="line">'+data+'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
         }).fail(function(data) {
             if (data.status === 412) {
                 newPopUpWindow = window.open(window.location.href + data.responseText, "DescriptiveWindowName",
@@ -59,12 +59,19 @@ function sendToServer(queryObj) {
                 
     var windowInterval = setInterval(checkIfWindowClosed,500);
                 function checkIfWindowClosed() {
-                    if(newPopUpWindow.closed) {
-                        console.log('eventually closed');
-                        sendToServer(queryObj);
+                    if(typeof newPopUpWindow === 'undefined') {
+                        console.log('type if undefined');
+                        $('#linie_principala').before('<div class="line">'+ '<p>Bailed the authentication.</p>' +'</div>');
+                        $("html, body").animate({ scrollTop: 10000000000 }, 500);
                         clearInterval(windowInterval);
                     } else {
-                        console.log('not closed yet');
+                        if(newPopUpWindow.closed) {
+                            console.log('eventually closed');
+                            sendToServer(queryObj);
+                            clearInterval(windowInterval);
+                        } else {
+                            console.log('not closed yet');
+                        }
                     }
                 };
             }
@@ -76,6 +83,7 @@ function enterPressed() {
     username = document.getElementById('un').innerText;
     if (status == 'noSpecial') {
         $('#linie_principala').before('<div class="line">'+ username + ':~$ '+ newCommand + '</div>');
+        $("html, body").animate({ scrollTop: 10000000000 }, 500);
     }
     
     if(newCommand === '') {
@@ -83,7 +91,6 @@ function enterPressed() {
         return;
     }
 
-    
     if(newCommand === 'clear') {
         $('.line').remove();  
         inputLeft = '';
@@ -101,11 +108,11 @@ function enterPressed() {
         if(username !== 'guest') {
             status = 'error';
             $('#linie_principala').before('<div class="line">'+ '<p>Please logout first.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
         } else {
             status = 'login';
             $('#linie_principala').before('<div class="line">'+ '<p>Please enter your username.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
             return;
         }
         
@@ -117,11 +124,11 @@ function enterPressed() {
         if(username !== 'guest') {
             status = 'error';
             $('#linie_principala').before('<div class="line">'+ '<p>Please logout first.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
         } else {
             status = 'register';
             $('#linie_principala').before('<div class="line">'+ '<p>Please enter your username.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
             return;
         }
     }
@@ -133,7 +140,7 @@ function enterPressed() {
             reqObj = {cmd: 'login', un: newCommand}; 
             status = 'loginPassword'; 
             $('#linie_principala').before('<div class="line">'+ '<p>Please enter your password.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 })
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
         break;
         case  'loginPassword': 
             status = 'noSpecial';
@@ -145,13 +152,13 @@ function enterPressed() {
             reqObj = {cmd: 'register', un: newCommand};
             status = 'registerPassword'; 
             $('#linie_principala').before('<div class="line">'+ '<p>Please enter your password.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
         break;
         case 'registerPassword':
             reqObj.pw = newCommand;
             status = 'registerVerifyPassword'; 
             $('#linie_principala').before('<div class="line">'+ '<p>Please retype your password.</p>' +'</div>');
-            $("html, body").animate({ scrollTop: 10000000000 });
+            $("html, body").animate({ scrollTop: 10000000000 }, 500);
 
         break;
         case 'registerVerifyPassword':

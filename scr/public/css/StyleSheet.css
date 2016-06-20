@@ -36,12 +36,19 @@
   }
 }
 
+html{
+   -webkit-transition: transform 900ms ease;
+   transition: transform 900ms ease;
+}
 
 body {
   font-family: monospace;
   font-size: 13px;
   color: #a6e22e;
   background-color: #272822;
+
+  -webkit-transition: transform 900ms ease;
+   transition: transform 900ms ease;
 }
 
 /*
