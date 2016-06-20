@@ -28,11 +28,13 @@ exports.authenticate = function(req, res) {
   	res.status(412).end(provider1);
     return;
   } 
-
+  
   var obj2 = undefined;
   if (splitedCommand.length == 2) {
     obj2 = utils.getCommadObject(splitedCommand[1]);
     var provider2 = getProvider(obj2.provider);
+    console.log('********************\n' +  provider2);
+    console.log('********************');
     if (obj2 != undefined && (req.session.oauth === undefined || 
                 !req.session.oauth.hasOwnProperty(provider2.toString().trim()))) {
       res.status(412).end(provider2);
@@ -48,9 +50,10 @@ exports.afterAnAuthentication = function(req, res) {
   var obj2 = undefined;
   if (splitedCommand.length == 2) {
     obj2 = utils.getCommadObject(splitedCommand[1]);
+    var provider2 = getProvider(obj2.provider);
     if (obj2 != undefined && (req.session.oauth === undefined || 
-                !req.session.oauth.hasOwnProperty(obj2.provider.toString().trim()))) {
-      res.redirect('/' + obj2.provider);
+                !req.session.oauth.hasOwnProperty(provider2))) {
+      res.status(412).end(provider2);
       return;
     } 
   }
