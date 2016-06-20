@@ -31,14 +31,9 @@ function validateInsertParameterValue(commandObj) {
 }
 
 function validateMaybeDateOrCountHints(commandObj) {
-	if (commandObj.d != undefined) {
-		return util.getDateValid(commandObj.d) != undefined;
-	}
-	if (commandObj.c != undefined && util.isInt(commandObj.c)) {
-		return false;
-	}
-	return (Object.keys(commandObj).length == 4 && commandObj.d != undefined && commandObj.c != undefined) ||
-	       (Object.keys(commandObj).length == 3 && commandObj.d != undefined) ||
-	       (Object.keys(commandObj).length == 3 && commandObj.c != undefined) ||
-	       (Object.keys(commandObj).length == 2);
+	var nrUnits = 2;
+	nrUnits += commandObj.hasOwnProperty('d') ? 1 : 0;
+	nrUnits += commandObj.hasOwnProperty('c') ? 1 : 0;
+	return Object.keys(commandObj).length == nrUnits;
 }
+
