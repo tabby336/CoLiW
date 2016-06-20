@@ -132,7 +132,7 @@ function getSimpleCommandParts(cmd) {
       default: nextString += item;
     }
   }
-  if (nextString.trim()) {
+  if (!isQuote && nextString.trim()) {
     commandParts.push(nextString.trim())
   }
   return commandParts;
