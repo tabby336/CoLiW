@@ -75,10 +75,22 @@ function enterPressed() {
     newCommand = inputLeft + inputRigth;
     username = document.getElementById('un').innerText;
     $('#linie_principala').before('<div class="line">'+ username + ':~$ '+ newCommand + '</div>');
+    
     if(newCommand === '') {
         console.log('comanda vida');
         return;
     }
+
+    
+    if(newCommand === 'clear') {
+        $('.line').remove();  
+        inputLeft = '';
+        inputRigth = '';      
+        return ;
+    }
+
+
+
     console.log('dupa if');
     inputLeft = '';
     inputRigth = '';
@@ -243,7 +255,6 @@ function arrowDown() {
     if (arrowCount > 0) {
         --arrowCount; 
     }
-    //getCommandFromHistory();
 }
 
 

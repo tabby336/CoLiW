@@ -58,8 +58,15 @@ exports.authProviders = function(req, res) {
     case "register": loginController.registerPost(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
     case "login": loginController.checkLogin(req, res, undefined); req.session.cmd = '!!!!?!!!!'; return; break;
     case "logout": loginController.logout(req, res); req.session.cmd = '!!!!?!!!!'; return; break;
-    case 'dropbox': dropboxController.getFile(req,res); return; break;
-
+    case "clear": 
+      new data.ApiHistory({id: req.session.passport.user, command: "clear"})
+      .save(null, {method: 'insert'})
+      .then(function(model) {
+      },function(err) {
+        console.log(err);
+      });
+      res.redirect('/');
+      break;
     default: 
     console.log(req.session.passport);
       if(req.session.passport.user === undefined) {
@@ -79,7 +86,7 @@ exports.authProviders = function(req, res) {
         },function(err) {
           console.log(err);
         });
-        
+
         toClient.send(req, res, outputFotmat.errorMessage('Command format is not valid!'));
       }
       console.log('splitedCommand: ' + splitedCommand);
